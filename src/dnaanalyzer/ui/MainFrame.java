@@ -64,7 +64,7 @@ public class MainFrame extends JFrame {
     private int successfulAnalyses;
 
     public MainFrame() {
-        super("DNA Sequence Analyzer - BioLab Edition");
+        super("DNA Sequence Analyzer - BioLab");
 
         this.analyzerService = new SequenceAnalyzerService(new SequenceValidator(), new AnalysisHistory());
         this.inputArea = new JTextArea(6, 40);
