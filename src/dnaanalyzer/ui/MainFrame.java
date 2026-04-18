@@ -15,6 +15,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.swing.AbstractAction;
@@ -143,7 +144,7 @@ public class MainFrame extends JFrame {
         getRootPane().getActionMap().put("load", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleLoadAndAnalyze();
+                handleLoadFromFile();
             }
         });
 
@@ -279,27 +280,31 @@ public class MainFrame extends JFrame {
 
         JButton loadBtn = new JButton("Load From File");
         JButton historyBtn = new JButton("Show History");
+        JButton exportHistoryBtn = new JButton("Export History");
         JButton copyBtn = new JButton("Copy Result");
         JButton clearBtn = new JButton("Clear");
 
         styleButton(analyzeBtn, PRIMARY, true);
         styleButton(loadBtn, new Color(63, 93, 138), true);
         styleButton(historyBtn, new Color(104, 126, 159), true);
+        styleButton(exportHistoryBtn, new Color(137, 104, 161), true);
         styleButton(copyBtn, new Color(73, 132, 114), true);
         styleButton(clearBtn, new Color(180, 75, 75), true);
 
         analyzeBtn.setToolTipText("Analyze current input (Ctrl+Enter)");
-        loadBtn.setToolTipText("Load and analyze from a text or FASTA file (Ctrl+L)");
+        loadBtn.setToolTipText("Load sequence from a text or FASTA file into input (Ctrl+L)");
         historyBtn.setToolTipText("Show analysis history");
+        exportHistoryBtn.setToolTipText("Export analysis history to a text file");
         copyBtn.setToolTipText("Copy output text to clipboard");
         clearBtn.setToolTipText("Clear input, output, and history");
 
         analyzeBtn.addActionListener(e -> handleAnalyze());
-        loadBtn.addActionListener(e -> handleLoadAndAnalyze());
+        loadBtn.addActionListener(e -> handleLoadFromFile());
         historyBtn.addActionListener(e -> {
             outputArea.setText(analyzerService.getHistory().toMultilineText());
             setStatus("History displayed.", STATUS_INFO);
         });
+        exportHistoryBtn.addActionListener(e -> handleExportHistory());
         copyBtn.addActionListener(e -> {
             if (!outputArea.getText().isBlank()) {
                 outputArea.selectAll();
@@ -315,6 +320,7 @@ public class MainFrame extends JFrame {
         buttonPanel.add(analyzeBtn);
         buttonPanel.add(loadBtn);
         buttonPanel.add(historyBtn);
+        buttonPanel.add(exportHistoryBtn);
         buttonPanel.add(copyBtn);
         buttonPanel.add(clearBtn);
         return buttonPanel;
@@ -353,7 +359,7 @@ public class MainFrame extends JFrame {
         }
     }
 
-    private void handleLoadAndAnalyze() {
+    private void handleLoadFromFile() {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Select Sequence File");
         chooser.setFileFilter(new FileNameExtensionFilter("Sequence files (*.txt, *.fa, *.fasta)", "txt", "fa", "fasta"));
@@ -366,16 +372,44 @@ public class MainFrame extends JFrame {
 
         File selected = chooser.getSelectedFile();
         try {
-            AnalysisResult analysis = analyzerService.analyzeSequence(selected.toPath());
-            inputArea.setText(analysis.getInputSequence());
-            outputArea.setText(analysis.toDisplayText());
-            successfulAnalyses++;
-            streakLabel.setText("Analyses this run: " + successfulAnalyses);
-            updateDashboard(analysis);
-            resultTabs.setSelectedIndex(1);
-            setStatus("Loaded and analyzed: " + selected.getName(), STATUS_OK);
-        } catch (InvalidNucleotideException | IOException ex) {
+            String sequence = analyzerService.readSequenceFromFile(selected.toPath());
+            if (sequence.isBlank()) {
+                setStatus("No sequence data found in selected file.", STATUS_ERROR);
+                showError("Selected file does not contain sequence lines.");
+                return;
+            }
+
+            inputArea.setText(sequence);
+            resultTabs.setSelectedIndex(0);
+            setStatus("Loaded sequence from: " + selected.getName(), STATUS_OK);
+        } catch (IOException ex) {
             setStatus("Unable to load selected file.", STATUS_ERROR);
+            showError(ex.getMessage());
+        }
+    }
+
+    private void handleExportHistory() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Export Analysis History");
+        chooser.setFileFilter(new FileNameExtensionFilter("Text files (*.txt)", "txt"));
+        chooser.setSelectedFile(new File("analysis-history.txt"));
+
+        int result = chooser.showSaveDialog(this);
+        if (result != JFileChooser.APPROVE_OPTION) {
+            setStatus("History export cancelled.", STATUS_INFO);
+            return;
+        }
+
+        Path exportPath = chooser.getSelectedFile().toPath();
+        if (!exportPath.getFileName().toString().toLowerCase().endsWith(".txt")) {
+            exportPath = exportPath.resolveSibling(exportPath.getFileName().toString() + ".txt");
+        }
+
+        try {
+            analyzerService.getHistory().exportTo(exportPath);
+            setStatus("History exported to: " + exportPath.getFileName(), STATUS_OK);
+        } catch (IOException ex) {
+            setStatus("Failed to export history.", STATUS_ERROR);
             showError(ex.getMessage());
         }
     }

@@ -3,6 +3,9 @@ package dnaanalyzer.repository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import dnaanalyzer.model.AnalysisResult;
 
@@ -36,5 +39,9 @@ public class AnalysisHistory {
             builder.append(result.toDisplayText()).append(System.lineSeparator());
         }
         return builder.toString();
+    }
+
+    public void exportTo(Path filePath) throws IOException {
+        Files.writeString(filePath, toMultilineText());
     }
 }

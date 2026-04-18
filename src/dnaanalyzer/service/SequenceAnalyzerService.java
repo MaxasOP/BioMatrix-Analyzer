@@ -3,6 +3,7 @@ package dnaanalyzer.service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import dnaanalyzer.exception.InvalidNucleotideException;
 import dnaanalyzer.model.AnalysisResult;
@@ -33,8 +34,32 @@ public class SequenceAnalyzerService {
     }
 
     public AnalysisResult analyzeSequence(Path filePath) throws InvalidNucleotideException, IOException {
-        String fileContent = Files.readString(filePath);
-        return analyzeSequence(fileContent, true);
+        String sequence = readSequenceFromFile(filePath);
+        return analyzeSequence(sequence, false);
+    }
+
+    public String readSequenceFromFile(Path filePath) throws IOException {
+        List<String> lines = Files.readAllLines(filePath);
+        StringBuilder builder = new StringBuilder();
+
+        for (String line : lines) {
+            if (line == null) {
+                continue;
+            }
+
+            String trimmed = line.trim();
+            if (trimmed.isEmpty() || trimmed.startsWith(">") || trimmed.startsWith(";")) {
+                continue;
+            }
+
+            builder.append(trimmed.replaceAll("\\s+", ""));
+        }
+
+        if (builder.length() == 0) {
+            return "";
+        }
+
+        return builder.toString().toUpperCase();
     }
 
     public AnalysisHistory getHistory() {
