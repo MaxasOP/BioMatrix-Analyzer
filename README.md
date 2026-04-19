@@ -19,14 +19,6 @@ A Java Swing application for validating and analyzing DNA/RNA sequences. Support
 | History | Stores `AnalysisResult`s in `ArrayList` |
 | File I/O | Load sequences from `.txt`, `.fa`, `.fasta` (FASTA headers ignored) and export history to `.txt` |
 
-## Syllabus Coverage
-- **Unit 1 & 2 (Datatypes, Strings, Operators, Control Statements)**: Sequence parsing/validation, GC-content/nucleotide calculations, input checks with if-else/loops/string ops.
-- **Unit 3 (Classes, Objects, Constructors, Method Overloading)**: Classes like `AnalysisResult`, `SequenceAnalyzerService`; constructors; overloaded methods.
-- **Unit 4 (Inheritance, Abstraction, Interfaces, Overriding)**: Abstract `GeneticSequence`; subclasses `DNASequence`/`RNASequence`; interface `Analyzable`; overrides for `analyze()`/`validate()`/`transcribeOrTransform()`.
-- **Unit 5 (Exception Handling)**: Custom `InvalidNucleotideException`; try-catch-throw in service/UI.
-- **Unit 6 (GUI)**: Swing `JFrame`/`JPanel`, input/output areas, button events.
-- **Unit 7 (Collections)**: `ArrayList<AnalysisResult>` for history; enhanced for-loops.
-
 ## Project Structure
 ```
 JavaProject/
