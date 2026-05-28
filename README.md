@@ -14,12 +14,11 @@ Bioinformatics platform built with Next.js, Supabase, and Gemini. Analyze DNA/RN
 
 ## Getting started
 ```bash
-cd web
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+
 
 ## Environment variables
 Copy the example file and fill in your keys:
@@ -44,6 +43,6 @@ Required for Supabase history:
 
 ## Deploy on Vercel
 1. Import the repo in Vercel.
-2. Set the root directory to `web`.
+2. Set the root directory to `./`.
 3. Add the env vars above or connect the Supabase integration.
 4. Deploy.
