@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f6f7fb;
+  --paper-deep: #eef2f7;
+  --ink: #0b1324;
+  --ink-soft: #475569;
+  --accent: #0ea5a4;
+  --accent-strong: #0f766e;
+  --accent-warm: #f97316;
+  --accent-cold: #3b82f6;
+  --glow: #d8f6f0;
+  --shadow-soft: 0 28px 70px rgba(15, 23, 42, 0.16);
+  --shadow-card: 0 16px 36px rgba(15, 23, 42, 0.12);
+  --radius-card: 24px;
+  --font-sans: var(--font-space);
+  --font-mono: var(--font-plex-mono);
+}
+
+@theme inline {
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), "Segoe UI", system-ui, sans-serif;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, white);
+  color: var(--ink);
+}
+
+@layer utilities {
+  .bg-grid {
+    background-image: linear-gradient(
+        to right,
+        rgba(15, 23, 42, 0.06) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.06) 1px,
+        transparent 1px
+      );
+    background-size: 48px 48px;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(14px);
+  }
+
+  .text-gradient {
+    background: linear-gradient(110deg, var(--accent), var(--accent-cold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.7s ease both;
+  }
+
+  .animate-float {
+    animation: float 10s ease-in-out infinite;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-float {
+    animation: none;
+  }
+}
