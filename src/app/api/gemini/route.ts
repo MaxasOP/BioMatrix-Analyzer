@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
 
-  const modelName = process.env.GEMINI_MODEL ?? "gemini-1.5-flash";
+  const modelName = process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({ model: modelName });
 
@@ -34,9 +34,11 @@ export async function POST(request: Request) {
     const result = await model.generateContent(prompt);
     const text = result.response.text();
     return NextResponse.json({ text });
-  } catch {
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : String(error);
+    console.error("Gemini request failed", detail);
     return NextResponse.json(
-      { error: "Gemini request failed" },
+      { error: "Gemini request failed", detail, modelName },
       { status: 500 }
     );
   }

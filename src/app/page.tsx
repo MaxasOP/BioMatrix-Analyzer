@@ -220,7 +220,12 @@ export default function Home() {
       });
 
       if (!response.ok) {
-        throw new Error("Gemini request failed");
+        const data = (await response.json().catch(() => null)) as
+          | { error?: string; detail?: string; modelName?: string }
+          | null;
+        const serverMessage =
+          data?.detail ?? data?.error ?? "Gemini request failed";
+        throw new Error(serverMessage);
       }
 
       const data = (await response.json()) as { text?: string };
@@ -228,7 +233,8 @@ export default function Home() {
     } catch {
       setStatus({
         type: "error",
-        message: "Gemini request failed. Check API key and usage limits.",
+        message:
+          "Gemini request failed. Check the server error details, API key, model name, and usage limits.",
       });
     } finally {
       setAiLoading(false);
