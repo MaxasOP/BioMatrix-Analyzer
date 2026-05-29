@@ -1,4 +1,4 @@
-# BioMatrix AI (Web)
+# BioMatrix.AI 
 
 Bioinformatics platform built with Next.js, Supabase, and Gemini. Analyze DNA/RNA sequences, detect mutations, find ORFs, map restriction enzymes, and generate AI explanations.
 
