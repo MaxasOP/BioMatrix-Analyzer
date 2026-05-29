@@ -426,13 +426,21 @@ export default function AnalyzeClient() {
             </p>
           </div>
 
-          <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5">
-            <h2 className="text-xl font-semibold">Why this page is simpler</h2>
-            <p className="text-sm leading-6 text-[var(--ink-soft)]">
-              This page only focuses on analysis and AI interpretation. Generator,
-              history, and profile live on their own pages so the workflow is easier to
-              scan.
-            </p>
+          <div className="grid gap-3 rounded-3xl bg-white/5 p-5">
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 h-9 w-9 overflow-hidden">
+                <img
+                  src="/dna-svgrepo-com.svg"
+                  alt="DNA icon"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              <p className="text-sm leading-6 text-[var(--ink-soft)]">
+                This page only focuses on analysis and AI interpretation. Generator,
+                history, and profile live on their own pages so the workflow is easier to
+                scan.
+              </p>
+            </div>
           </div>
         </aside>
       </section>

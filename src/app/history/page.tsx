@@ -135,12 +135,6 @@ export default function HistoryPage() {
 
         {notice && <p className="text-sm text-[var(--ink-soft)]">{notice}</p>}
 
-        {!process.env.NEXT_PUBLIC_SITE_URL && (
-          <p className="text-xs text-[var(--ink-soft)]">
-            Tip: set NEXT_PUBLIC_SITE_URL in your env to force email links to the correct domain.
-          </p>
-        )}
-
         {history.length === 0 ? (
           <p className="text-sm text-[var(--ink-soft)]">No saved analyses yet.</p>
         ) : (
