@@ -66,6 +66,7 @@ export default function AnalyzeClient() {
   } | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [theme, setTheme] = useState<ThemeMode>("dark");
   const [initialQueryApplied, setInitialQueryApplied] = useState(false);
@@ -245,7 +246,28 @@ export default function AnalyzeClient() {
     setMutationSummary(summary);
 
     if (session?.access_token) {
-      void fetch("/api/history", {
+      // Previously auto-saved here. Auto-save removed so users can choose what to store.
+    }
+
+    await requestAiExplanation(result, summary);
+    setIsAnalyzing(false);
+  };
+
+  const saveAnalysis = async () => {
+    if (!analysis) {
+      setStatus({ type: "info", message: "Nothing to save yet. Run an analysis first." });
+      return;
+    }
+
+    if (!session?.access_token) {
+      setStatus({ type: "info", message: "Sign in to save analyses to the cloud." });
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+      setStatus({ type: "info", message: "Saving analysis..." });
+      const res = await fetch("/api/history", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -253,18 +275,26 @@ export default function AnalyzeClient() {
         },
         body: JSON.stringify({
           sequence_preview:
-            result.sequence.length > 60 ? `${result.sequence.slice(0, 60)}...` : result.sequence,
+            analysis.sequence.length > 60 ? `${analysis.sequence.slice(0, 60)}...` : analysis.sequence,
           payload: {
-            analysis: result,
-            mutationSummary: summary,
-            compareSequence: compareCleaned || null,
+            analysis,
+            mutationSummary,
+            compareSequence: compareSequence.trim() || null,
           },
         }),
       });
-    }
 
-    await requestAiExplanation(result, summary);
-    setIsAnalyzing(false);
+      if (!res.ok) {
+        const text = await res.text().catch(() => null);
+        throw new Error(text || "Save failed");
+      }
+
+      setStatus({ type: "success", message: "Saved to cloud history." });
+    } catch (err) {
+      setStatus({ type: "error", message: err instanceof Error ? err.message : "Save failed." });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const statusClass = status
@@ -332,6 +362,16 @@ export default function AnalyzeClient() {
               >
                 {isBusy ? (isAnalyzing ? "Analyzing..." : "Running AI...") : "Run analysis"}
               </button>
+              {analysis && (
+                <button
+                  type="button"
+                  className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10 disabled:opacity-70"
+                  onClick={saveAnalysis}
+                  disabled={!session || isSaving}
+                >
+                  {isSaving ? "Saving..." : "Save"}
+                </button>
+              )}
               <a
                 href="/generator"
                 className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10"
@@ -421,25 +461,15 @@ export default function AnalyzeClient() {
                 <p>Run analysis to generate a plain-language explanation.</p>
               )}
             </div>
-            <p className="text-sm text-[var(--ink-soft)]">
-              The AI call retries once automatically if Gemini is busy.
-            </p>
           </div>
 
           <div className="grid gap-3 rounded-3xl bg-white/5 p-5">
-            <div className="flex items-start gap-3">
-              <div className="mt-0.5 h-9 w-9 overflow-hidden">
-                <img
-                  src="/dna-svgrepo-com.svg"
-                  alt="DNA icon"
-                  className="h-full w-full object-contain"
-                />
-              </div>
-              <p className="text-sm leading-6 text-[var(--ink-soft)]">
-                This page only focuses on analysis and AI interpretation. Generator,
-                history, and profile live on their own pages so the workflow is easier to
-                scan.
-              </p>
+            <div className="flex items-center justify-center">
+              <img
+                src="/dna-svgrepo-com.svg"
+                alt="DNA icon"
+                className="w-full h-auto max-h-48 object-contain"
+              />
             </div>
           </div>
         </aside>

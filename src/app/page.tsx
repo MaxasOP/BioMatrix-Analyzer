@@ -79,9 +79,7 @@ export default function Home() {
               {accountLabel}
             </Link>
           </div>
-          <p className="text-sm text-[var(--ink-soft)]">
-            Cloud sign-in returns here first, then you can open your profile from this button.
-          </p>
+          
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2">

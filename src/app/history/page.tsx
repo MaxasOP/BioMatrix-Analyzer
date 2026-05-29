@@ -44,7 +44,10 @@ export default function HistoryPage() {
     });
 
     if (!response.ok) {
-      throw new Error("History unavailable");
+      // try to surface server error body to the browser console to aid debugging
+      const text = await response.text().catch(() => null);
+      console.error("/api/history failed", response.status, text);
+      throw new Error(text || "History unavailable");
     }
 
     const data = (await response.json()) as { items?: HistoryItem[] };
