@@ -32,6 +32,8 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${spaceGrotesk.variable} ${plexMono.variable} h-full antialiased`}
+      data-theme="dark"
+      style={{ colorScheme: "dark" }}
     >
       <body className="min-h-full bg-[var(--paper)] text-[var(--ink)]">
         <Navbar />

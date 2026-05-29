@@ -4,8 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-type ThemeMode = "dark" | "light";
-
 const links = [
   { href: "/", label: "Overview" },
   { href: "/analyze", label: "Analyze" },
@@ -17,37 +15,6 @@ const links = [
 export default function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [theme, setTheme] = useState<ThemeMode>("dark");
-
-  useEffect(() => {
-    try {
-      const savedTheme = window.localStorage.getItem("bio-matrix-theme");
-      const preferredTheme =
-        savedTheme === "light" || savedTheme === "dark"
-          ? savedTheme
-          : window.matchMedia?.("(prefers-color-scheme: light)").matches
-            ? "light"
-            : "dark";
-      setTheme(preferredTheme);
-      document.documentElement.dataset.theme = preferredTheme;
-      document.documentElement.style.colorScheme = preferredTheme;
-    } catch {
-      setTheme("dark");
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const nextTheme: ThemeMode = theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
-    document.documentElement.dataset.theme = nextTheme;
-    document.documentElement.style.colorScheme = nextTheme;
-
-    try {
-      window.localStorage.setItem("bio-matrix-theme", nextTheme);
-    } catch {
-      // Ignore storage issues.
-    }
-  };
 
   useEffect(() => {
     // close mobile menu when navigation changes
@@ -86,13 +53,6 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="rounded-full border border-[var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-2 text-[var(--ink)] transition hover:bg-[color-mix(in_srgb,var(--surface-soft)_62%,var(--accent)_38%)]"
-            >
-              {theme === "dark" ? "Light" : "Dark"}
-            </button>
           </div>
 
           {/* Mobile menu button */}
@@ -132,16 +92,6 @@ export default function Navbar() {
                       {link.label}
                     </Link>
                   ))}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      toggleTheme();
-                      setMenuOpen(false);
-                    }}
-                    className="mt-1 rounded-md border border-[var(--border-subtle)] bg-[var(--surface-soft)] px-3 py-2 text-sm text-[var(--ink)]"
-                  >
-                    {theme === "dark" ? "Light" : "Dark"}
-                  </button>
                 </div>
               </div>
             )}

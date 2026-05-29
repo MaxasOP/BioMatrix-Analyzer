@@ -21,24 +21,6 @@
   --font-mono: var(--font-plex-mono);
 }
 
-:root[data-theme="light"] {
-  --paper: #eef7ff;
-  --paper-deep: #ddeafb;
-  --ink: #0b1730;
-  --ink-soft: #3f587a;
-  --accent: #007a67;
-  --accent-strong: #0d5f74;
-  --accent-warm: #d25e0a;
-  --accent-cold: #1f63dd;
-  --glow: rgba(0, 122, 103, 0.16);
-  --surface: rgba(255, 255, 255, 0.9);
-  --surface-soft: rgba(11, 23, 48, 0.05);
-  --border-subtle: rgba(33, 68, 112, 0.16);
-  --grid-line: rgba(33, 68, 112, 0.12);
-  --shadow-soft: 0 28px 70px rgba(15, 23, 42, 0.12);
-  --shadow-card: 0 16px 36px rgba(15, 23, 42, 0.10);
-}
-
 @theme inline {
   --color-background: var(--paper);
   --color-foreground: var(--ink);

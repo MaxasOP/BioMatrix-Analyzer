@@ -19,8 +19,6 @@ import HamsterLoader from "@/components/HamsterLoader";
 import { createBrowserSupabaseClient } from "@/lib/supabase-browser";
 import type { Session } from "@supabase/supabase-js";
 
-type ThemeMode = "dark" | "light";
-
 const supabase = createBrowserSupabaseClient();
 
 const formatAiResponse = (text: string) =>
@@ -68,7 +66,6 @@ export default function AnalyzeClient() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
-  const [theme, setTheme] = useState<ThemeMode>("dark");
   const [initialQueryApplied, setInitialQueryApplied] = useState(false);
 
   const normalizedInput = useMemo(() => sanitizeSequence(sequence), [sequence]);
@@ -80,21 +77,6 @@ export default function AnalyzeClient() {
   const isBusy = isAnalyzing || aiLoading;
 
   useEffect(() => {
-    try {
-      const savedTheme = window.localStorage.getItem("bio-matrix-theme");
-      const nextTheme: ThemeMode =
-        savedTheme === "light" || savedTheme === "dark"
-          ? savedTheme
-          : window.matchMedia?.("(prefers-color-scheme: light)").matches
-            ? "light"
-            : "dark";
-      setTheme(nextTheme);
-      document.documentElement.dataset.theme = nextTheme;
-      document.documentElement.style.colorScheme = nextTheme;
-    } catch {
-      // ignore
-    }
-
     if (!supabase) {
       return;
     }
@@ -299,16 +281,10 @@ export default function AnalyzeClient() {
 
   const statusClass = status
     ? status.type === "error"
-      ? theme === "dark"
-        ? "border-red-400/40 bg-red-500/10 text-red-200"
-        : "border-red-200 bg-red-50 text-red-700"
+      ? "border-red-400/40 bg-red-500/10 text-red-200"
       : status.type === "success"
-        ? theme === "dark"
-          ? "border-emerald-400/40 bg-emerald-500/10 text-emerald-200"
-          : "border-emerald-200 bg-emerald-50 text-emerald-700"
-        : theme === "dark"
-          ? "border-white/10 bg-white/5 text-slate-200"
-          : "border-slate-200 bg-white text-slate-700"
+        ? "border-emerald-400/40 bg-emerald-500/10 text-emerald-200"
+        : "border-white/10 bg-white/5 text-slate-200"
     : "";
 
   return (
