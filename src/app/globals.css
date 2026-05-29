@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #f6f7fb;
-  --paper-deep: #eef2f7;
-  --ink: #0b1324;
-  --ink-soft: #475569;
-  --accent: #0ea5a4;
-  --accent-strong: #0f766e;
-  --accent-warm: #f97316;
-  --accent-cold: #3b82f6;
-  --glow: #d8f6f0;
-  --shadow-soft: 0 28px 70px rgba(15, 23, 42, 0.16);
-  --shadow-card: 0 16px 36px rgba(15, 23, 42, 0.12);
+  --paper: #040814;
+  --paper-deep: #0b1324;
+  --ink: #e5eefb;
+  --ink-soft: #94a3b8;
+  --accent: #22d3ee;
+  --accent-strong: #67e8f9;
+  --accent-warm: #fb923c;
+  --accent-cold: #60a5fa;
+  --glow: rgba(34, 211, 238, 0.16);
+  --shadow-soft: 0 28px 70px rgba(2, 6, 23, 0.42);
+  --shadow-card: 0 16px 36px rgba(2, 6, 23, 0.34);
   --radius-card: 24px;
   --font-sans: var(--font-space);
   --font-mono: var(--font-plex-mono);
@@ -29,7 +29,10 @@
 }
 
 body {
-  background: var(--paper);
+  background:
+    radial-gradient(circle at top left, rgba(34, 211, 238, 0.12), transparent 24%),
+    radial-gradient(circle at top right, rgba(96, 165, 250, 0.08), transparent 20%),
+    linear-gradient(180deg, #040814 0%, #08101d 48%, #0b1324 100%);
   color: var(--ink);
   font-family: var(--font-sans), "Segoe UI", system-ui, sans-serif;
 }
@@ -43,20 +46,20 @@ body {
   .bg-grid {
     background-image: linear-gradient(
         to right,
-        rgba(15, 23, 42, 0.06) 1px,
+        rgba(148, 163, 184, 0.09) 1px,
         transparent 1px
       ),
       linear-gradient(
         to bottom,
-        rgba(15, 23, 42, 0.06) 1px,
+        rgba(148, 163, 184, 0.09) 1px,
         transparent 1px
       );
     background-size: 48px 48px;
   }
 
   .glass-card {
-    background: rgba(255, 255, 255, 0.86);
-    border: 1px solid rgba(15, 23, 42, 0.08);
+    background: rgba(8, 15, 28, 0.72);
+    border: 1px solid rgba(148, 163, 184, 0.12);
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-card);
     backdrop-filter: blur(14px);
