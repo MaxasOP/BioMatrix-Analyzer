@@ -1,0 +1,134 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+
+import { createBrowserSupabaseClient } from "@/lib/supabase-browser";
+import type { Session } from "@supabase/supabase-js";
+
+const supabase = createBrowserSupabaseClient();
+
+export default function ProfilePage() {
+  const [session, setSession] = useState<Session | null>(null);
+  const [email, setEmail] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!supabase) {
+      return;
+    }
+
+    void supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    const { data } = supabase.auth.onAuthStateChange((_, nextSession) => setSession(nextSession));
+    return () => data.subscription.unsubscribe();
+  }, []);
+
+  const sendLink = async () => {
+    if (!supabase) {
+      setNotice("Supabase is not configured.");
+      return;
+    }
+
+    if (!email.trim()) {
+      setNotice("Enter an email to receive a sign-in link.");
+      return;
+    }
+
+    setBusy(true);
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email: email.trim(),
+        options: { emailRedirectTo: window.location.origin },
+      });
+      if (error) throw error;
+      setNotice("Sign-in link sent. Check your inbox.");
+      setEmail("");
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Could not send sign-in link.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const signOut = async () => {
+    if (!supabase) return;
+    setBusy(true);
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      setSession(null);
+      setNotice("Signed out.");
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Could not sign out.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <main className="mx-auto max-w-5xl px-6 py-12">
+      <section className="grid gap-6 rounded-[32px] border border-white/10 bg-white/5 p-8 shadow-[0_18px_60px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+        <div>
+          <p className="text-xs uppercase tracking-[0.35em] text-cyan-300">Profile</p>
+          <h1 className="mt-3 text-4xl font-semibold sm:text-5xl">User profile</h1>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--ink-soft)]">
+            Sign in to keep your analyses separate and save work to the cloud.
+          </p>
+        </div>
+
+        {session ? (
+          <div className="grid gap-4 rounded-3xl border border-white/10 bg-white/5 p-5">
+            <p className="text-sm text-slate-200">
+              Signed in as {session.user.email ?? "user"}
+            </p>
+            <button
+              type="button"
+              className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10 disabled:opacity-70"
+              onClick={signOut}
+              disabled={busy}
+            >
+              Sign out
+            </button>
+          </div>
+        ) : (
+          <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5 sm:grid-cols-[1fr_auto]">
+            <input
+              className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-400"
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+            <button
+              type="button"
+              className="rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-70"
+              onClick={sendLink}
+              disabled={busy}
+            >
+              Send sign-in link
+            </button>
+          </div>
+        )}
+
+        {notice && <p className="text-sm text-[var(--ink-soft)]">{notice}</p>}
+
+        <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5 text-sm text-slate-300">
+          <p>Cloud profile benefits:</p>
+          <p>• Saved analyses stay attached to your account.</p>
+          <p>• History can be restored on another device.</p>
+          <p>• Each user keeps a separate workspace.</p>
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          <Link href="/history" className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10">
+            View history
+          </Link>
+          <Link href="/analyze" className="rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400">
+            Open analyzer
+          </Link>
+        </div>
+      </section>
+    </main>
+  );
+}

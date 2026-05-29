@@ -5,7 +5,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export const SUPABASE_TABLE = process.env.SUPABASE_TABLE ?? "analysis_history";
 
-export function createSupabaseClient(): SupabaseClient | null {
+export function createSupabaseClient(authToken?: string | null): SupabaseClient | null {
   if (!supabaseUrl || !supabaseAnonKey) {
     return null;
   }
@@ -15,5 +15,12 @@ export function createSupabaseClient(): SupabaseClient | null {
       persistSession: false,
       autoRefreshToken: false,
     },
+    global: authToken
+      ? {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      : undefined,
   });
 }
