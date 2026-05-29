@@ -1,4 +1,12 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
+
+import { createBrowserSupabaseClient } from "@/lib/supabase-browser";
+import type { Session } from "@supabase/supabase-js";
+
+const supabase = createBrowserSupabaseClient();
 
 const cards = [
   {
@@ -24,6 +32,24 @@ const cards = [
 ];
 
 export default function Home() {
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    if (!supabase) {
+      return;
+    }
+
+    void supabase.auth.getSession().then(({ data }) => setSession(data.session));
+
+    const { data } = supabase.auth.onAuthStateChange((_, nextSession) => {
+      setSession(nextSession);
+    });
+
+    return () => data.subscription.unsubscribe();
+  }, []);
+
+  const accountLabel = session ? "Open profile" : "Set up cloud profile";
+
   return (
     <main className="mx-auto max-w-6xl px-6 py-12">
       <section className="grid gap-8 rounded-[32px] border border-white/10 bg-white/5 p-8 shadow-[0_18px_60px_rgba(0,0,0,0.12)] backdrop-blur-xl lg:grid-cols-[1.1fr_0.9fr]">
@@ -50,9 +76,12 @@ export default function Home() {
               href="/profile"
               className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10"
             >
-              Sign in
+              {accountLabel}
             </Link>
           </div>
+          <p className="text-sm text-[var(--ink-soft)]">
+            Cloud sign-in returns here first, then you can open your profile from this button.
+          </p>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2">

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 
 import { createBrowserSupabaseClient } from "@/lib/supabase-browser";
+import { getAuthRedirectUrl } from "@/lib/auth-redirect";
 import type { Session } from "@supabase/supabase-js";
 
 type HistoryPayload = {
@@ -81,9 +82,10 @@ export default function HistoryPage() {
 
     setBusy(true);
     try {
+      const emailRedirectTo = getAuthRedirectUrl("/history");
       const { error } = await supabase.auth.signInWithOtp({
         email: email.trim(),
-        options: { emailRedirectTo: window.location.origin },
+        options: emailRedirectTo ? { emailRedirectTo } : undefined,
       });
       if (error) throw error;
       setNotice("Sign-in link sent. Check your inbox.");
@@ -132,6 +134,12 @@ export default function HistoryPage() {
         )}
 
         {notice && <p className="text-sm text-[var(--ink-soft)]">{notice}</p>}
+
+        {!process.env.NEXT_PUBLIC_SITE_URL && (
+          <p className="text-xs text-[var(--ink-soft)]">
+            Tip: set NEXT_PUBLIC_SITE_URL in your env to force email links to the correct domain.
+          </p>
+        )}
 
         {history.length === 0 ? (
           <p className="text-sm text-[var(--ink-soft)]">No saved analyses yet.</p>

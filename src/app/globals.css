@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #040814;
-  --paper-deep: #0b1324;
-  --ink: #e5eefb;
-  --ink-soft: #94a3b8;
-  --accent: #22d3ee;
-  --accent-strong: #67e8f9;
-  --accent-warm: #fb923c;
-  --accent-cold: #60a5fa;
-  --glow: rgba(34, 211, 238, 0.16);
-  --surface: rgba(8, 15, 28, 0.72);
-  --surface-soft: rgba(255, 255, 255, 0.05);
-  --border-subtle: rgba(148, 163, 184, 0.12);
-  --grid-line: rgba(148, 163, 184, 0.09);
+  --paper: #050c19;
+  --paper-deep: #0a1326;
+  --ink: #e9f2ff;
+  --ink-soft: #9fb0c9;
+  --accent: #10d3b2;
+  --accent-strong: #5debd3;
+  --accent-warm: #ff8f3d;
+  --accent-cold: #43a7ff;
+  --glow: rgba(16, 211, 178, 0.22);
+  --surface: rgba(7, 18, 36, 0.78);
+  --surface-soft: rgba(255, 255, 255, 0.06);
+  --border-subtle: rgba(143, 168, 198, 0.24);
+  --grid-line: rgba(121, 149, 182, 0.18);
   --shadow-soft: 0 28px 70px rgba(2, 6, 23, 0.42);
   --shadow-card: 0 16px 36px rgba(2, 6, 23, 0.34);
   --radius-card: 24px;
@@ -22,19 +22,19 @@
 }
 
 :root[data-theme="light"] {
-  --paper: #f7fbff;
-  --paper-deep: #e8eef7;
-  --ink: #0f172a;
-  --ink-soft: #475569;
-  --accent: #0f766e;
-  --accent-strong: #115e59;
-  --accent-warm: #c2410c;
-  --accent-cold: #2563eb;
-  --glow: rgba(14, 165, 164, 0.12);
-  --surface: rgba(255, 255, 255, 0.82);
-  --surface-soft: rgba(15, 23, 42, 0.04);
-  --border-subtle: rgba(15, 23, 42, 0.10);
-  --grid-line: rgba(15, 23, 42, 0.06);
+  --paper: #eef7ff;
+  --paper-deep: #ddeafb;
+  --ink: #0b1730;
+  --ink-soft: #3f587a;
+  --accent: #007a67;
+  --accent-strong: #0d5f74;
+  --accent-warm: #d25e0a;
+  --accent-cold: #1f63dd;
+  --glow: rgba(0, 122, 103, 0.16);
+  --surface: rgba(255, 255, 255, 0.9);
+  --surface-soft: rgba(11, 23, 48, 0.05);
+  --border-subtle: rgba(33, 68, 112, 0.16);
+  --grid-line: rgba(33, 68, 112, 0.12);
   --shadow-soft: 0 28px 70px rgba(15, 23, 42, 0.12);
   --shadow-card: 0 16px 36px rgba(15, 23, 42, 0.10);
 }
@@ -52,11 +52,37 @@
 
 body {
   background:
-    radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 16%, transparent), transparent 24%),
-    radial-gradient(circle at top right, color-mix(in srgb, var(--accent-cold) 12%, transparent), transparent 20%),
+    radial-gradient(1200px 620px at 2% -8%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 66%),
+    radial-gradient(860px 520px at 98% 0%, color-mix(in srgb, var(--accent-cold) 28%, transparent), transparent 70%),
+    radial-gradient(700px 360px at 78% 88%, color-mix(in srgb, var(--accent-warm) 16%, transparent), transparent 72%),
     linear-gradient(180deg, var(--paper) 0%, color-mix(in srgb, var(--paper-deep) 92%, var(--paper) 8%) 48%, var(--paper-deep) 100%);
   color: var(--ink);
   font-family: var(--font-sans), "Segoe UI", system-ui, sans-serif;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.5;
+  mask-image: radial-gradient(circle at 50% 10%, black 42%, transparent 88%);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 24%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 44%),
+    radial-gradient(circle at 82% 20%, color-mix(in srgb, var(--accent-cold) 20%, transparent), transparent 48%);
+  opacity: 0.45;
 }
 
 ::selection {

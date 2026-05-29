@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { createBrowserSupabaseClient } from "@/lib/supabase-browser";
+import { getAuthRedirectUrl } from "@/lib/auth-redirect";
 import type { Session } from "@supabase/supabase-js";
 
 const supabase = createBrowserSupabaseClient();
@@ -37,9 +38,10 @@ export default function ProfilePage() {
 
     setBusy(true);
     try {
+      const emailRedirectTo = getAuthRedirectUrl("/profile");
       const { error } = await supabase.auth.signInWithOtp({
         email: email.trim(),
-        options: { emailRedirectTo: window.location.origin },
+        options: emailRedirectTo ? { emailRedirectTo } : undefined,
       });
       if (error) throw error;
       setNotice("Sign-in link sent. Check your inbox.");
@@ -112,6 +114,12 @@ export default function ProfilePage() {
         )}
 
         {notice && <p className="text-sm text-[var(--ink-soft)]">{notice}</p>}
+
+        {!process.env.NEXT_PUBLIC_SITE_URL && (
+          <p className="text-xs text-[var(--ink-soft)]">
+            Tip: set NEXT_PUBLIC_SITE_URL in your env to force email links to the correct domain.
+          </p>
+        )}
 
         <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5 text-sm text-slate-300">
           <p>Cloud profile benefits:</p>

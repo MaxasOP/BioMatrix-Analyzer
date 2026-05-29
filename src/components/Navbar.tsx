@@ -49,7 +49,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-[color-mix(in_srgb,var(--paper)_78%,transparent)] backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[color-mix(in_srgb,var(--paper)_82%,transparent)] backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
         <Link href="/" className="flex items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-cyan-400/30 bg-cyan-400/10 text-cyan-300">
@@ -71,8 +71,8 @@ export default function Navbar() {
               href={link.href}
               className={`rounded-full border px-4 py-2 transition ${
                 pathname === link.href
-                  ? "border-cyan-400/40 bg-cyan-400/10 text-cyan-200"
-                  : "border-white/10 bg-white/5 text-slate-200 hover:bg-white/10"
+                  ? "border-[color-mix(in_srgb,var(--accent)_48%,transparent)] bg-[color-mix(in_srgb,var(--accent)_16%,transparent)] text-[var(--ink)]"
+                  : "border-[var(--border-subtle)] bg-[var(--surface-soft)] text-[var(--ink)] hover:bg-[color-mix(in_srgb,var(--surface-soft)_68%,var(--accent)_32%)]"
               }`}
             >
               {link.label}
@@ -81,7 +81,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={toggleTheme}
-            className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-slate-200 transition hover:bg-white/10"
+            className="rounded-full border border-[var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-2 text-[var(--ink)] transition hover:bg-[color-mix(in_srgb,var(--surface-soft)_62%,var(--accent)_38%)]"
           >
             {theme === "dark" ? "Light" : "Dark"}
           </button>
