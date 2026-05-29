@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { SUPABASE_TABLE, createSupabaseClient } from "@/lib/supabase";
+import { createClient as createServiceClient } from "@supabase/supabase-js";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -80,7 +81,41 @@ export async function POST(request: Request) {
   if (!body?.sequence_preview || !body.payload) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
+  // Prefer using a server-side service role key to perform inserts so Row Level Security
+  // policies do not reject the request due to missing auth context. If a service role key
+  // is not available, attempt to insert using the user's token (may fail if RLS is enabled
+  // and the auth JWT isn't forwarded correctly).
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+  if (serviceRoleKey) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    if (!url) {
+      return NextResponse.json({ error: "Supabase URL not configured." }, { status: 503 });
+    }
+
+    const svc = createServiceClient(url, serviceRoleKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+
+    const { data, error } = await svc
+      .from(SUPABASE_TABLE)
+      .insert({
+        user_id: user.id,
+        sequence_preview: body.sequence_preview,
+        payload: body.payload,
+      })
+      .select("id, created_at, sequence_preview, payload")
+      .single();
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ item: data });
+  }
+
+  // Fallback: try using the client created from the incoming token. This will
+  // only work if the JWT is correctly forwarded and RLS allows the insert.
   const { data, error } = await supabase
     .from(SUPABASE_TABLE)
     .insert({
