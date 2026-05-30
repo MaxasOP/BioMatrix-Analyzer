@@ -174,10 +174,10 @@ export default function ProfilePage() {
         {notice && <p className="text-sm text-[var(--ink-soft)]">{notice}</p>}
 
         <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5 text-sm text-slate-300">
-          <p>Cloud profile benefits:</p>
+          <p>Cloud profile :</p>
           <p>• Saved analyses stay attached to your account.</p>
           <p>• History can be restored on another device.</p>
-          <p>• Each user keeps a separate workspace.</p>
+          <p>• Secure and reliable workspace.</p>
         </div>
 
         <div className="flex flex-wrap gap-3">
