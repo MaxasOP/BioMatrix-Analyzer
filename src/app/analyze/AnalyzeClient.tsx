@@ -52,6 +52,7 @@ function BusyOverlay({ label }: { label: string }) {
 
 export default function AnalyzeClient() {
   const searchParams = useSearchParams();
+  const [step, setStep] = useState<number>(1);
   const [sequence, setSequence] = useState("");
   const [compareSequence, setCompareSequence] = useState("");
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
@@ -75,6 +76,18 @@ export default function AnalyzeClient() {
   );
   const detectedType = normalizedInput ? detectSequenceType(normalizedInput) : "DNA";
   const isBusy = isAnalyzing || aiLoading;
+
+  function nextStep() {
+    setStep((s) => Math.min(3, s + 1));
+  }
+
+  function prevStep() {
+    setStep((s) => Math.max(1, s - 1));
+  }
+
+  function goToStep(n: number) {
+    setStep(() => Math.max(1, Math.min(3, n)));
+  }
 
   useEffect(() => {
     if (!supabase) {
@@ -288,10 +301,27 @@ export default function AnalyzeClient() {
     : "";
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-12">
+    <main id="main" aria-busy={isBusy} className="mx-auto max-w-6xl px-6 py-12">
       {isBusy && (
         <BusyOverlay label={isAnalyzing ? "Analyzing your sequence" : "Generating AI summary"} />
       )}
+
+      {/* Stepper */}
+      <div className="mx-auto mb-6 max-w-6xl px-6">
+        <nav className="flex items-center gap-3 text-sm" aria-label="Analysis steps">
+          {[1, 2, 3].map((n) => (
+            <button
+              key={n}
+              onClick={() => goToStep(n)}
+              className={`rounded-full px-3 py-1 ${step === n ? "bg-[var(--accent)] text-white" : "bg-[var(--surface-soft)] text-[var(--ink-soft)]"} focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 enter-up`}
+              aria-current={step === n ? "step" : undefined}
+            >
+              {n === 1 ? "Input" : n === 2 ? "Compare" : "Review"}
+            </button>
+          ))}
+          <div className="ml-4 text-xs text-[var(--ink-soft)]">Step {step} of 3</div>
+        </nav>
+      </div>
 
       <section className="grid gap-6 rounded-[32px] border border-white/10 bg-white/5 p-8 shadow-[0_18px_60px_rgba(0,0,0,0.12)] backdrop-blur-xl lg:grid-cols-[1.1fr_0.9fr]">
         <div className="grid gap-6">
@@ -306,96 +336,168 @@ export default function AnalyzeClient() {
             </p>
           </div>
 
-          <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5">
-            <label className="text-sm font-medium text-slate-300">Primary sequence</label>
-            <textarea
-              className="min-h-[180px] w-full rounded-2xl border border-white/10 bg-slate-950/60 p-4 font-mono text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-400"
-              value={sequence}
-              onChange={(event) => setSequence(event.target.value)}
-              placeholder="Paste DNA/RNA or load a sequence from the generator"
-            />
-            <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-300">
-              <span>Detected: {normalizedInput ? detectedType : "N/A"}</span>
-              <span>Length: {normalizedInput.length} bases</span>
-            </div>
-            <label className="text-sm font-medium text-slate-300">Comparison sequence</label>
-            <textarea
-              className="min-h-[120px] w-full rounded-2xl border border-white/10 bg-slate-950/60 p-4 font-mono text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-400"
-              value={compareSequence}
-              onChange={(event) => setCompareSequence(event.target.value)}
-              placeholder="Paste a second sequence to detect mutations"
-            />
-            <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-300">
-              <span>Comparison length: {normalizedCompare.length} bases</span>
-              <span>Comparison uses T/U normalization</span>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <button
-                type="button"
-                className="rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-70"
-                onClick={handleAnalyze}
-                disabled={isBusy}
-              >
-                {isBusy ? (isAnalyzing ? "Analyzing..." : "Running AI...") : "Run analysis"}
-              </button>
-              {analysis && (
-                <button
-                  type="button"
-                  className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10 disabled:opacity-70"
-                  onClick={saveAnalysis}
-                  disabled={!session || isSaving}
-                >
-                  {isSaving ? "Saving..." : "Save"}
-                </button>
-              )}
-              <a
-                href="/generator"
-                className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10"
-              >
-                Open generator
-              </a>
-            </div>
+          <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5 enter-up">
+            {step === 1 && (
+              <>
+                <label className="text-sm font-medium text-[var(--ink-soft)]">Primary sequence</label>
+                <textarea
+                  className="min-h-[180px] w-full rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)] p-4 font-mono text-sm text-[var(--ink)] outline-none placeholder:text-[var(--ink-soft)] focus:border-[var(--accent)]"
+                  value={sequence}
+                  onChange={(event) => setSequence(event.target.value)}
+                  placeholder="Paste DNA/RNA or load a sequence from the generator"
+                />
+                <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-[var(--ink-soft)]">
+                  <span>Detected: {normalizedInput ? detectedType : "N/A"}</span>
+                  <span>Length: {normalizedInput.length} bases</span>
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    className="rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--accent-strong)] disabled:opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
+                    onClick={nextStep}
+                  >
+                    Next: Compare
+                  </button>
+                </div>
+              </>
+            )}
 
-            {status && (
-              <div className={`rounded-2xl border px-4 py-3 text-sm ${statusClass}`}>
-                {status.message}
-              </div>
+            {step === 2 && (
+              <>
+                <label className="text-sm font-medium text-[var(--ink-soft)]">Comparison sequence</label>
+                <textarea
+                  className="min-h-[120px] w-full rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)] p-4 font-mono text-sm text-[var(--ink)] outline-none placeholder:text-[var(--ink-soft)] focus:border-[var(--accent)]"
+                  value={compareSequence}
+                  onChange={(event) => setCompareSequence(event.target.value)}
+                  placeholder="Paste a second sequence to detect mutations (optional)"
+                />
+                <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-[var(--ink-soft)]">
+                  <span>Comparison length: {normalizedCompare.length} bases</span>
+                  <span>Comparison uses T/U normalization</span>
+                </div>
+                <div className="flex justify-between">
+                  <button type="button" className="rounded-full border border-[var(--border-subtle)] px-5 py-3 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2" onClick={prevStep}>
+                    Back
+                  </button>
+                  <button type="button" className="rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2" onClick={nextStep}>
+                    Review
+                  </button>
+                </div>
+              </>
+            )}
+
+            {step === 3 && (
+              <>
+                <h3 className="text-sm font-medium text-[var(--ink-soft)]">Review and run</h3>
+                <div className="mt-2 grid gap-2">
+                  <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)] p-3">
+                    <p className="text-xs text-[var(--ink-soft)]">Primary</p>
+                    <p className="mt-1 font-mono text-sm text-[var(--ink)] truncate">{sequence || <span className="text-[var(--ink-soft)]">(empty)</span>}</p>
+                  </div>
+                  <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)] p-3">
+                    <p className="text-xs text-[var(--ink-soft)]">Comparison</p>
+                    <p className="mt-1 font-mono text-sm text-[var(--ink)] truncate">{compareSequence || <span className="text-[var(--ink-soft)]">(none)</span>}</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-3 mt-4">
+                  <button
+                    type="button"
+                    className="rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--accent-strong)] disabled:opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
+                    onClick={handleAnalyze}
+                    disabled={isBusy}
+                  >
+                    {isBusy ? (isAnalyzing ? "Analyzing..." : "Running AI...") : "Run analysis"}
+                  </button>
+                  {analysis && (
+                    <button
+                      type="button"
+                      className="rounded-full border border-[var(--border-subtle)] bg-[var(--surface)] px-5 py-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--surface-soft)] disabled:opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
+                      onClick={saveAnalysis}
+                      disabled={!session || isSaving}
+                    >
+                      {isSaving ? "Saving..." : "Save"}
+                    </button>
+                  )}
+
+                  <a
+                    href="/generator"
+                    className="rounded-full border border-[var(--border-subtle)] bg-[var(--surface)] px-5 py-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--surface-soft)]"
+                  >
+                    Open generator
+                  </a>
+                </div>
+
+                {status && (
+                  <div className={`rounded-2xl border px-4 py-3 text-sm ${statusClass} mt-3`}>
+                    {status.message}
+                  </div>
+                )}
+
+                <div className="flex justify-between mt-3">
+                  <button type="button" className="rounded-full border border-[var(--border-subtle)] px-5 py-3 text-sm" onClick={prevStep}>
+                    Back
+                  </button>
+                </div>
+              </>
             )}
           </div>
 
           <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5">
             <h2 className="text-xl font-semibold">Summary</h2>
-            {analysis ? (
-              <div className="grid gap-4">
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  {[
-                    ["Type", analysis.sequenceType],
-                    ["Length", `${analysis.length} bases`],
-                    ["GC%", analysis.gcPercentage.toFixed(2)],
-                    ["ORFs", String(analysis.orfs.length)],
-                  ].map(([label, value]) => (
-                    <div key={label} className="rounded-2xl border border-white/10 bg-white/5 p-3">
-                      <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{label}</p>
-                      <p className="mt-1 text-lg font-semibold text-slate-100">{value}</p>
-                    </div>
-                  ))}
+              {isAnalyzing || aiLoading ? (
+                <div className="grid gap-4">
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                      <div key={i} className="rounded-2xl p-3">
+                        <div className="h-3 w-3/5 mb-3 rounded bg-[var(--surface-soft)] animate-pulse" />
+                        <div className="h-6 w-3/4 rounded bg-[var(--surface-soft)] animate-pulse" />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <span key={i} className="h-6 rounded-full px-3 py-1 text-sm bg-[var(--surface-soft)] animate-pulse" />
+                    ))}
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-3">
-                  {Object.entries(analysis.counts).map(([key, value]) => (
-                    <span key={key} className="rounded-full bg-white/5 px-3 py-1 text-sm text-slate-200">
-                      {key}: {value}
-                    </span>
-                  ))}
+              ) : analysis ? (
+                <div className="grid gap-4">
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    {[
+                      ["Type", analysis.sequenceType],
+                      ["Length", `${analysis.length} bases`],
+                      ["GC%", analysis.gcPercentage.toFixed(2)],
+                      ["ORFs", String(analysis.orfs.length)],
+                    ].map(([label, value]) => (
+                      <div key={label} className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)] p-3">
+                        <p className="text-xs uppercase tracking-[0.2em] text-[var(--ink-soft)]">{label}</p>
+                        <p className="mt-1 text-lg font-semibold text-[var(--ink)]">{value}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    {Object.entries(analysis.counts).map(([key, value]) => (
+                      <span key={key} className="rounded-full bg-[var(--surface)] px-3 py-1 text-sm text-[var(--ink)]">
+                        {key}: {value}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <p className="text-sm text-[var(--ink-soft)]">Run analysis to see the sequence summary.</p>
-            )}
+              ) : (
+                <p className="text-sm text-[var(--ink-soft)]">Run analysis to see the sequence summary.</p>
+              )}
           </div>
 
           <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5">
             <h2 className="text-xl font-semibold">Mutation details</h2>
-            {mutationSummary ? (
+            {isAnalyzing ? (
+              <div className="grid gap-3">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="h-12 rounded-2xl bg-[var(--surface-soft)] animate-pulse" />
+                ))}
+              </div>
+            ) : mutationSummary ? (
               <div className="grid gap-3">
                 <div className="flex flex-wrap gap-3 text-sm">
                   <span className="rounded-full bg-white/5 px-3 py-1 text-slate-200">Total: {mutationSummary.total}</span>
@@ -428,13 +530,13 @@ export default function AnalyzeClient() {
         <aside className="grid gap-6 lg:sticky lg:top-6">
           <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5">
             <h2 className="text-xl font-semibold">AI summary</h2>
-            <div className="min-h-[180px] rounded-2xl border border-white/10 bg-slate-950/50 p-4 text-sm text-slate-200">
+            <div className="min-h-[180px] rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)] p-4 text-sm text-[var(--ink)] enter-up">
               {aiLoading || isAnalyzing ? (
-                <p className="py-10 text-center text-slate-300">Generating insight...</p>
+                <div className="py-10 text-center text-[var(--ink-soft)]">Generating insight...</div>
               ) : aiText ? (
-                <pre className="whitespace-pre-wrap font-sans leading-7 text-slate-200">{aiText}</pre>
+                <pre className="whitespace-pre-wrap font-sans leading-7 text-[var(--ink)]">{aiText}</pre>
               ) : (
-                <p>Run analysis to generate a plain-language explanation.</p>
+                <p className="text-[var(--ink-soft)]">Run analysis to generate a plain-language explanation.</p>
               )}
             </div>
           </div>

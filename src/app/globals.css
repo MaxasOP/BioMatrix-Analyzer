@@ -1,6 +1,32 @@
 @import "tailwindcss";
 
+/*
+  Design tokens for light/dark themes.
+  Default root = light theme; [data-theme="dark"] overrides.
+*/
 :root {
+  --paper: #ffffff;
+  --paper-deep: #f4f7fb;
+  --ink: #0b1220;
+  --ink-soft: #4a5568;
+  --accent: #0f766e; /* teal accent for trust-first look */
+  --accent-strong: #0ea5a0;
+  --accent-warm: #ff7a42;
+  --accent-cold: #2563eb;
+  --glow: rgba(15, 118, 110, 0.08);
+  --surface: rgba(255, 255, 255, 0.9);
+  --surface-soft: rgba(15, 20, 25, 0.04);
+  --border-subtle: rgba(15, 20, 25, 0.08);
+  --grid-line: rgba(15, 20, 25, 0.04);
+  --shadow-soft: 0 14px 40px rgba(2, 6, 23, 0.06);
+  --shadow-card: 0 8px 20px rgba(2, 6, 23, 0.06);
+  --radius-card: 12px;
+  --font-sans: var(--font-space);
+  --font-mono: var(--font-plex-mono);
+}
+
+/* Dark theme overrides */
+[data-theme="dark"] {
   --paper: #050c19;
   --paper-deep: #0a1326;
   --ink: #e9f2ff;
@@ -17,8 +43,6 @@
   --shadow-soft: 0 28px 70px rgba(2, 6, 23, 0.42);
   --shadow-card: 0 16px 36px rgba(2, 6, 23, 0.34);
   --radius-card: 24px;
-  --font-sans: var(--font-space);
-  --font-mono: var(--font-plex-mono);
 }
 
 @theme inline {
@@ -33,14 +57,11 @@
 }
 
 body {
-  background:
-    radial-gradient(1200px 620px at 2% -8%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 66%),
-    radial-gradient(860px 520px at 98% 0%, color-mix(in srgb, var(--accent-cold) 28%, transparent), transparent 70%),
-    radial-gradient(700px 360px at 78% 88%, color-mix(in srgb, var(--accent-warm) 16%, transparent), transparent 72%),
-    linear-gradient(180deg, var(--paper) 0%, color-mix(in srgb, var(--paper-deep) 92%, var(--paper) 8%) 48%, var(--paper-deep) 100%);
+  background: linear-gradient(180deg, var(--paper) 0%, var(--paper-deep) 100%);
   color: var(--ink);
   font-family: var(--font-sans), "Segoe UI", system-ui, sans-serif;
   position: relative;
+  transition: background-color 240ms ease, color 240ms ease;
 }
 
 body::before {
@@ -48,23 +69,10 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background-image:
-    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-image: linear-gradient(to right, var(--grid-line) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
   background-size: 48px 48px;
   opacity: 0.5;
   mask-image: radial-gradient(circle at 50% 10%, black 42%, transparent 88%);
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 12% 24%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 44%),
-    radial-gradient(circle at 82% 20%, color-mix(in srgb, var(--accent-cold) 20%, transparent), transparent 48%);
-  opacity: 0.45;
 }
 
 ::selection {
@@ -74,16 +82,7 @@ body::after {
 
 @layer utilities {
   .bg-grid {
-    background-image: linear-gradient(
-        to right,
-        var(--grid-line) 1px,
-        transparent 1px
-      ),
-      linear-gradient(
-        to bottom,
-        var(--grid-line) 1px,
-        transparent 1px
-      );
+    background-image: linear-gradient(to right, var(--grid-line) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
     background-size: 48px 48px;
   }
 
@@ -92,7 +91,7 @@ body::after {
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-card);
-    backdrop-filter: blur(14px);
+    backdrop-filter: blur(10px);
   }
 
   .text-gradient {
@@ -136,5 +135,29 @@ body::after {
   .animate-fade-up,
   .animate-float {
     animation: none;
+  }
+}
+
+/* Focus-visible utility for keyboard accessibility */
+:where(button, a, [role="button"], input, textarea):focus {
+  outline: none;
+}
+
+:where(button, a, [role="button"], input, textarea):focus-visible {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
+  border-radius: 8px;
+}
+
+/* Gentle entrance for components */
+.enter-up {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: enter-up 420ms cubic-bezier(.2,.9,.2,1) forwards;
+}
+
+@keyframes enter-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
