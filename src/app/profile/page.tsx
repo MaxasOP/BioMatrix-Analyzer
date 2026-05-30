@@ -98,7 +98,7 @@ export default function ProfilePage() {
             <input
               className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-400"
               type="email"
-              placeholder="you@example.com"
+              placeholder="john@example.com"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
@@ -108,7 +108,7 @@ export default function ProfilePage() {
               onClick={sendLink}
               disabled={busy}
             >
-              Send sign-in link
+              Send OTP
             </button>
           </div>
         )}
