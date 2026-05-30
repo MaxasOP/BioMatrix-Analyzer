@@ -107,8 +107,7 @@ export default function HistoryPage() {
           <p className="text-xs uppercase tracking-[0.35em] text-cyan-300">History</p>
           <h1 className="mt-3 text-4xl font-semibold sm:text-5xl">Cloud history</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--ink-soft)]">
-            Signed-in users get a separate cloud workspace. Saved analyses can be restored
-            on any device.
+            You can view and access your saved analyses here. 
           </p>
         </div>
 

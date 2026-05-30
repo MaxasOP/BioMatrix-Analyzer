@@ -27,7 +27,7 @@ const cards = [
   {
     href: "/profile",
     title: "Profile",
-    description: "Sign in and keep each user’s analyses separate.",
+    description: "Sign in to save your research.",
   },
 ];
 
@@ -55,14 +55,11 @@ export default function Home() {
       <section className="grid gap-8 rounded-[32px] border border-white/10 bg-white/5 p-8 shadow-[0_18px_60px_rgba(0,0,0,0.12)] backdrop-blur-xl lg:grid-cols-[1.1fr_0.9fr]">
         <div className="grid gap-6">
           <div>
-            <p className="text-xs uppercase tracking-[0.35em] text-cyan-300">BioMatrix AI</p>
+            
             <h1 className="mt-3 text-4xl font-semibold leading-tight sm:text-6xl">
-              A cleaner way to work with sequence tools
+              Get your samples analyzed in seconds 
             </h1>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--ink-soft)] sm:text-lg">
-              The app is now split into focused pages so the analyzer, generator, history,
-              and profile each have their own space.
-            </p>
+           
           </div>
 
           <div className="flex flex-wrap gap-3">

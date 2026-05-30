@@ -42,7 +42,7 @@ function BusyOverlay({ label }: { label: string }) {
         <div>
           <p className="text-lg font-semibold text-slate-100">{label}</p>
           <p className="mt-1 text-sm text-slate-300">
-            Gemini can take a moment. The app will retry once if needed.
+            Gemini can take a moment. Hold on dear Researcher...
           </p>
         </div>
       </div>
@@ -301,8 +301,7 @@ export default function AnalyzeClient() {
               Focused sequence analysis
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--ink-soft)]">
-              This page is only for analysis so the workflow stays clean. You can paste a
-              sequence, compare it, and let Gemini explain the result.
+              In case you don't have a sequence ready, try the generator to create one with specific features. Paste your sequence using Open in Analyzer option.
             </p>
           </div>
 

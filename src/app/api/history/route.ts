@@ -132,3 +132,70 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ item: data });
 }
+
+export async function DELETE(request: Request) {
+  const { supabase, user } = await getUserFromRequest(request);
+  if (!supabase) {
+    return NextResponse.json({ error: "Supabase is not configured." }, { status: 503 });
+  }
+
+  if (!user) {
+    return NextResponse.json({ error: "Sign in to manage your cloud history." }, { status: 401 });
+  }
+
+  let body: { id?: string } | null = null;
+  try {
+    body = await request.json();
+  } catch {
+    body = null;
+  }
+
+  const id = body?.id;
+  if (!id) {
+    return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  }
+
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  // Prefer service role to perform delete but constrain by user_id to avoid deleting other users' rows.
+  if (serviceRoleKey) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    if (!url) {
+      return NextResponse.json({ error: "Supabase URL not configured." }, { status: 503 });
+    }
+
+    const svc = createServiceClient(url, serviceRoleKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+
+    // Delete only where id matches AND user_id matches the requesting user
+    const { data, error } = await svc
+      .from(SUPABASE_TABLE)
+      .delete()
+      .match({ id, user_id: user.id })
+      .select("id")
+      .single();
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    if (!data) {
+      return NextResponse.json({ error: "Not found or not permitted" }, { status: 404 });
+    }
+
+    return NextResponse.json({ deleted: data });
+  }
+
+  // Fallback: attempt delete using the user's token (will require RLS policy allowing delete by owner)
+  const { data, error } = await supabase.from(SUPABASE_TABLE).delete().eq("id", id).select("id").single();
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  if (!data) {
+    return NextResponse.json({ error: "Not found or not permitted" }, { status: 404 });
+  }
+
+  return NextResponse.json({ deleted: data });
+}
