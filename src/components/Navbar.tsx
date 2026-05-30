@@ -32,8 +32,8 @@ export default function Navbar() {
             </svg>
           </span>
           <div>
-            <p className="text-xs uppercase tracking-[0.28em] text-cyan-300">BioMatrix AI</p>
-            <p className="text-sm text-[var(--ink-soft)]">Sequence intelligence platform</p>
+            <p className="text-xs uppercase tracking-[0.28em] text-cyan-300">BioMatrix.AI</p>
+            <p className="text-sm text-[var(--ink-soft)]">Quick Analyses</p>
           </div>
         </Link>
 

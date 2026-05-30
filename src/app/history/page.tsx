@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 
 import { createBrowserSupabaseClient } from "@/lib/supabase-browser";
-import { getAuthRedirectUrl } from "@/lib/auth-redirect";
 import type { Session } from "@supabase/supabase-js";
 
 type HistoryPayload = {
@@ -29,6 +28,8 @@ const supabase = createBrowserSupabaseClient();
 export default function HistoryPage() {
   const [session, setSession] = useState<Session | null>(null);
   const [email, setEmail] = useState("");
+  const [otpCode, setOtpCode] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -74,29 +75,62 @@ export default function HistoryPage() {
     return () => data.subscription.unsubscribe();
   }, [loadHistory]);
 
-  const signIn = async () => {
+  const sendOtp = async () => {
     if (!supabase) {
       setNotice("Supabase is not configured.");
       return;
     }
 
     if (!email.trim()) {
-      setNotice("Enter an email to receive a sign-in link.");
+      setNotice("Enter an email to receive a sign-in code.");
       return;
     }
 
     setBusy(true);
     try {
-      const emailRedirectTo = getAuthRedirectUrl("/history");
       const { error } = await supabase.auth.signInWithOtp({
         email: email.trim(),
-        options: emailRedirectTo ? { emailRedirectTo } : undefined,
       });
       if (error) throw error;
-      setNotice("Sign-in link sent. Check your inbox.");
-      setEmail("");
+      setNotice("Verification code sent. Check your inbox.");
+      setOtpSent(true);
+      setOtpCode("");
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Could not sign in.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const verifyOtp = async () => {
+    if (!supabase) {
+      setNotice("Supabase is not configured.");
+      return;
+    }
+
+    if (!email.trim()) {
+      setNotice("Enter the email address that received the code.");
+      return;
+    }
+
+    if (!otpCode.trim()) {
+      setNotice("Enter the verification code from your email.");
+      return;
+    }
+
+    setBusy(true);
+    try {
+      const { error } = await supabase.auth.verifyOtp({
+        email: email.trim(),
+        token: otpCode.trim(),
+        type: "email",
+      });
+      if (error) throw error;
+      setNotice("Signed in successfully.");
+      setOtpSent(false);
+      setOtpCode("");
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Could not verify code.");
     } finally {
       setBusy(false);
     }
@@ -172,22 +206,46 @@ export default function HistoryPage() {
             Signed in as {session.user.email ?? "user"}
           </div>
         ) : (
-          <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5 sm:grid-cols-[1fr_auto]">
-            <input
-              className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-400"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-            <button
-              type="button"
-              className="rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-70"
-              onClick={signIn}
-              disabled={busy}
-            >
-              Send sign-in link
-            </button>
+          <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5">
+            <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+              <input
+                className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-400"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+              />
+              <button
+                type="button"
+                className="rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-70"
+                onClick={sendOtp}
+                disabled={busy}
+              >
+                Send code
+              </button>
+            </div>
+
+            {otpSent && (
+              <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+                <input
+                  className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-400"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  placeholder="Enter the 6-digit code"
+                  value={otpCode}
+                  onChange={(event) => setOtpCode(event.target.value)}
+                />
+                <button
+                  type="button"
+                  className="rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-70"
+                  onClick={verifyOtp}
+                  disabled={busy}
+                >
+                  Verify code
+                </button>
+              </div>
+            )}
           </div>
         )}
 
