@@ -21,6 +21,15 @@ export const metadata: Metadata = {
   title: "BioMatrix AI",
   description:
     "Bioinformatics platform for sequence analysis, mutation detection, and AI explanations.",
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/icon", type: "image/png", sizes: "512x512" },
+      { url: "/favicon.ico", type: "image/x-icon", sizes: "any" },
+    ],
+    apple: [{ url: "/apple-icon", type: "image/png", sizes: "180x180" }],
+    shortcut: ["/icon"],
+  },
 };
 
 export default function RootLayout({
