@@ -76,17 +76,17 @@ export default function Navbar() {
             </button>
 
             {menuOpen && (
-              <div className="absolute right-0 mt-2 w-48 rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-soft)] p-2 shadow-lg z-50">
+              <div className="absolute right-0 mt-2 w-52 rounded-2xl border border-[color-mix(in_srgb,var(--border-subtle)_75%,white)] bg-[color-mix(in_srgb,var(--paper-deep)_92%,black)] p-2 shadow-[0_18px_50px_rgba(0,0,0,0.45)] z-50">
                 <div className="flex flex-col gap-2">
                   {links.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
                       onClick={() => setMenuOpen(false)}
-                      className={`block rounded-md px-3 py-2 text-sm transition ${
+                      className={`block rounded-xl px-3 py-2 text-sm transition ${
                         pathname === link.href
-                          ? "bg-[color-mix(in_srgb,var(--accent)_16%,transparent)] text-[var(--ink)]"
-                          : "text-[var(--ink)] hover:bg-[color-mix(in_srgb,var(--surface-soft)_68%,var(--accent)_32%)]"
+                          ? "bg-[color-mix(in_srgb,var(--accent)_18%,transparent)] text-[var(--ink)]"
+                          : "text-[var(--ink)] hover:bg-[color-mix(in_srgb,var(--surface-soft)_35%,white)]"
                       }`}
                     >
                       {link.label}

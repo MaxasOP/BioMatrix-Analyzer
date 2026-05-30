@@ -27,7 +27,7 @@ const cards = [
   {
     href: "/profile",
     title: "Profile",
-    description: "Sign in to save your research.",
+    description: "Sign in to save your research or access a saved one.",
   },
 ];
 
@@ -65,13 +65,13 @@ export default function Home() {
           <div className="flex flex-wrap gap-3">
             <Link
               href="/analyze"
-              className="rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
+              className="inline-flex items-center justify-center rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 shadow-[0_10px_26px_rgba(6,182,212,0.22)] transition duration-200 hover:-translate-y-0.5 hover:bg-cyan-400 active:translate-y-0.5 cursor-pointer"
             >
               Open analyzer
             </Link>
             <Link
               href="/profile"
-              className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10"
+              className="inline-flex items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--border-subtle)_90%,white)] bg-[color-mix(in_srgb,var(--surface)_92%,white)] px-5 py-3 text-sm font-semibold text-[var(--ink)] shadow-[0_10px_24px_rgba(0,0,0,0.12)] transition duration-200 hover:-translate-y-0.5 hover:bg-[var(--surface)] active:translate-y-0.5 cursor-pointer"
             >
               {accountLabel}
             </Link>
@@ -84,10 +84,10 @@ export default function Home() {
             <Link
               key={card.href}
               href={card.href}
-              className="rounded-3xl border border-white/10 bg-white/5 p-5 transition hover:-translate-y-1 hover:bg-white/10"
+              className="group rounded-3xl border border-[color-mix(in_srgb,var(--border-subtle)_88%,white)] bg-[color-mix(in_srgb,var(--surface)_88%,white)] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.10)] transition duration-200 hover:-translate-y-1 hover:border-[color-mix(in_srgb,var(--accent)_42%,white)] hover:bg-[var(--surface)] active:translate-y-0.5 cursor-pointer"
             >
-              <h2 className="text-lg font-semibold text-slate-100">{card.title}</h2>
-              <p className="mt-2 text-sm leading-6 text-[var(--ink-soft)]">
+              <h2 className="text-lg font-semibold text-[var(--ink)]">{card.title}</h2>
+              <p className="mt-2 text-sm leading-6 text-[var(--ink-soft)] transition group-hover:text-[var(--ink)]">
                 {card.description}
               </p>
             </Link>
