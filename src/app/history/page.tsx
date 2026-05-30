@@ -32,6 +32,8 @@ export default function HistoryPage() {
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [deleteTarget, setDeleteTarget] = useState<HistoryItem | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const loadHistory = useCallback(async (currentSession?: Session | null) => {
     if (!supabase || !currentSession) {
@@ -97,6 +99,60 @@ export default function HistoryPage() {
       setNotice(error instanceof Error ? error.message : "Could not sign in.");
     } finally {
       setBusy(false);
+    }
+  };
+
+  const openDeleteDialog = (item: HistoryItem) => {
+    setNotice(null);
+    setDeleteTarget(item);
+  };
+
+  const closeDeleteDialog = () => {
+    if (deleting) {
+      return;
+    }
+    setDeleteTarget(null);
+  };
+
+  const deleteHistoryItem = async () => {
+    if (!supabase) {
+      setNotice("Supabase is not configured.");
+      return;
+    }
+
+    if (!session?.access_token) {
+      setNotice("Sign in to delete cloud history.");
+      return;
+    }
+
+    if (!deleteTarget?.id) {
+      setNotice("This saved item cannot be deleted because it has no id.");
+      return;
+    }
+
+    setDeleting(true);
+    try {
+      const response = await fetch("/api/history", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ id: deleteTarget.id }),
+      });
+
+      const responseBody = (await response.json().catch(() => null)) as { error?: string } | null;
+      if (!response.ok) {
+        throw new Error(responseBody?.error ?? "Delete failed");
+      }
+
+      setHistory((current) => current.filter((item) => item.id !== deleteTarget.id));
+      setNotice("Saved analysis deleted.");
+      setDeleteTarget(null);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Delete failed.");
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -169,11 +225,67 @@ export default function HistoryPage() {
                     >
                       Copy
                     </button>
+                    {item.id ? (
+                      <button
+                        type="button"
+                        className="rounded-full border border-red-400/30 bg-red-500/10 px-4 py-2 text-xs font-semibold text-red-200 transition hover:bg-red-500/20"
+                        onClick={() => openDeleteDialog(item)}
+                      >
+                        Delete
+                      </button>
+                    ) : null}
                   </div>
                 </div>
                 <p className="mt-3 font-mono text-xs text-slate-300">{item.sequence_preview}</p>
               </div>
             ))}
+          </div>
+        )}
+
+        {deleteTarget && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-history-title"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 px-6 backdrop-blur-sm"
+            onClick={closeDeleteDialog}
+          >
+            <div
+              className="w-full max-w-lg rounded-[28px] border border-white/10 bg-[var(--paper)] p-6 text-[var(--ink)] shadow-[0_24px_80px_rgba(0,0,0,0.4)]"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <p className="text-xs uppercase tracking-[0.35em] text-red-400">Delete saved analysis</p>
+              <h2 id="delete-history-title" className="mt-3 text-2xl font-semibold">
+                Remove this item from cloud history?
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-[var(--ink-soft)]">
+                This action permanently deletes the saved analysis from your cloud history. You can still keep the local sequence if you have it copied elsewhere.
+              </p>
+              <div className="mt-5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)] p-4 text-sm text-[var(--ink)]">
+                <p className="font-semibold">
+                  {deleteTarget.payload.analysis.sequenceType} · {deleteTarget.payload.analysis.length} bases · GC {deleteTarget.payload.analysis.gcPercentage.toFixed(1)}%
+                </p>
+                <p className="mt-1 font-mono text-xs text-[var(--ink-soft)]">{deleteTarget.sequence_preview}</p>
+              </div>
+              <div className="mt-6 flex flex-wrap justify-end gap-3">
+                <button
+                  type="button"
+                  className="rounded-full border border-[var(--border-subtle)] bg-[var(--surface)] px-5 py-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--surface-soft)]"
+                  onClick={closeDeleteDialog}
+                  disabled={deleting}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="rounded-full bg-red-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-500 disabled:opacity-70"
+                  onClick={deleteHistoryItem}
+                  disabled={deleting}
+                >
+                  {deleting ? "Deleting..." : "Delete permanently"}
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
