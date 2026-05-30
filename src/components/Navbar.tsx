@@ -26,9 +26,29 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
         <Link href="/" className="flex items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-cyan-400/30 bg-cyan-400/10 text-cyan-300">
-            <svg viewBox="0 0 64 64" className="h-6 w-6" fill="none" aria-hidden="true">
-              <path d="M18 14c8 0 12 6 12 18s-4 18-12 18" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
-              <path d="M46 14c-8 0-12 6-12 18s4 18 12 18" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+            <svg viewBox="0 0 64 64" className="h-6 w-6" role="img" aria-label="BioMatrix logo" xmlns="http://www.w3.org/2000/svg">
+              <title>BioMatrix</title>
+              <defs>
+                <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0%" stopColor="currentColor" stopOpacity="0.95" />
+                  <stop offset="100%" stopColor="currentColor" stopOpacity="0.5" />
+                </linearGradient>
+              </defs>
+              {/* mark: stylized helix + matrix dots */}
+              <g fill="none" stroke="url(#g)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M16 12c6 6 6 18 0 24" />
+                <path d="M48 12c-6 6-6 18 0 24" />
+                <path d="M22 12c4 0 8 6 10 12 2 6 6 12 10 12" opacity="0.85" />
+              </g>
+              <g fill="currentColor" opacity="0.9">
+                <rect x="10" y="8" width="2" height="2" rx="0.3" />
+                <rect x="16" y="20" width="2" height="2" rx="0.3" />
+                <rect x="26" y="34" width="2" height="2" rx="0.3" />
+                <rect x="38" y="20" width="2" height="2" rx="0.3" />
+                <rect x="46" y="8" width="2" height="2" rx="0.3" />
+              </g>
+              {/* subtle outline for contrast in light backgrounds */}
+              <circle cx="32" cy="32" r="31" stroke="currentColor" strokeOpacity="0.06" fill="none" />
             </svg>
           </span>
           <div>
