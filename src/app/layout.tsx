@@ -18,7 +18,11 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BioMatrix AI",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://biomatrix-analyzer.vercel.app"),
+  title: {
+    default: "BioMatrix AI",
+    template: "%s | BioMatrix AI",
+  },
   description:
     "Bioinformatics platform for sequence analysis, mutation detection, and AI explanations.",
   manifest: "/manifest.webmanifest",
@@ -29,6 +33,9 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: "/apple-icon", type: "image/png", sizes: "180x180" }],
     shortcut: ["/icon"],
+  },
+  verification: {
+    google: "VCBmtD7GlhFh-NGe_74Lz9iO0vcnGW3AXmlqJtr9aYY",
   },
 };
 

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 import {
   analyzeSequence,
@@ -306,8 +307,9 @@ export default function AnalyzeClient() {
           </div>
 
           <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5">
-            <label className="text-sm font-medium text-slate-300">Primary sequence</label>
+            <label className="text-sm font-medium text-slate-300" htmlFor="textarea-analyze-sequence">Primary sequence</label>
             <textarea
+              id="textarea-analyze-sequence"
               className="min-h-[180px] w-full rounded-2xl border border-white/10 bg-slate-950/60 p-4 font-mono text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-400"
               value={sequence}
               onChange={(event) => setSequence(event.target.value)}
@@ -317,8 +319,9 @@ export default function AnalyzeClient() {
               <span>Detected: {normalizedInput ? detectedType : "N/A"}</span>
               <span>Length: {normalizedInput.length} bases</span>
             </div>
-            <label className="text-sm font-medium text-slate-300">Comparison sequence</label>
+            <label className="text-sm font-medium text-slate-300" htmlFor="textarea-analyze-compare">Comparison sequence</label>
             <textarea
+              id="textarea-analyze-compare"
               className="min-h-[120px] w-full rounded-2xl border border-white/10 bg-slate-950/60 p-4 font-mono text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-400"
               value={compareSequence}
               onChange={(event) => setCompareSequence(event.target.value)}
@@ -331,6 +334,7 @@ export default function AnalyzeClient() {
             <div className="flex flex-wrap gap-3">
               <button
                 type="button"
+                id="btn-analyze-run"
                 className="rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-70"
                 onClick={handleAnalyze}
                 disabled={isBusy}
@@ -340,6 +344,7 @@ export default function AnalyzeClient() {
               {analysis && (
                 <button
                   type="button"
+                  id="btn-analyze-save"
                   className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10 disabled:opacity-70"
                   onClick={saveAnalysis}
                   disabled={!session || isSaving}
@@ -347,12 +352,13 @@ export default function AnalyzeClient() {
                   {isSaving ? "Saving..." : "Save"}
                 </button>
               )}
-              <a
+              <Link
                 href="/generator"
+                id="link-analyze-open-generator"
                 className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10"
               >
                 Open generator
-              </a>
+              </Link>
             </div>
 
             {status && (

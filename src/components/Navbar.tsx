@@ -24,7 +24,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[color-mix(in_srgb,var(--paper)_82%,transparent)] backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
-        <Link href="/" className="flex items-center gap-3">
+        <Link href="/" id="nav-logo-link" className="flex items-center gap-3">
           <span className="flex items-center">
             <svg viewBox="0 0 1024 1024" className="h-8 w-8" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="BioMatrix logo">
               <path d="M515.2 200c70.4-28.8 129.6-33.6 211.2-8 60.8 19.2 91.2 44.8 120 97.6 6.4 11.2 30.4 59.2 33.6 67.2 28.8 57.6 24 100.8-3.2 169.6-12.8 32-14.4 35.2-17.6 46.4-14.4 52.8-67.2 99.2-120 124.8-4.8 3.2-9.6 4.8-17.6 9.6-3.2 1.6-3.2 1.6-4.8 3.2-35.2 17.6-56 25.6-89.6 27.2-64 4.8-216-80-256-153.6-40-75.2-33.6-225.6 8-273.6 36.8-48 88-91.2 136-110.4z m11.2 30.4c-41.6 17.6-89.6 56-126.4 100.8-32 36.8-38.4 174.4-3.2 238.4 33.6 62.4 172.8 140.8 225.6 136 28.8-1.6 46.4-8 78.4-24 3.2-1.6 3.2-1.6 4.8-3.2 8-4.8 12.8-6.4 19.2-9.6 46.4-20.8 92.8-62.4 104-104 3.2-12.8 4.8-17.6 19.2-51.2 25.6-60.8 28.8-96 4.8-142.4-4.8-9.6-27.2-56-33.6-67.2-25.6-46.4-48-65.6-100.8-83.2-76.8-20.8-128-16-192 9.6z" fill="#050D42" />
@@ -48,6 +48,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
+                id={`nav-link-${link.label.toLowerCase()}`}
                 className={`rounded-full border px-4 py-2 transition ${
                   pathname === link.href
                     ? "border-[color-mix(in_srgb,var(--accent)_48%,transparent)] bg-[color-mix(in_srgb,var(--accent)_16%,transparent)] text-[var(--ink)]"
@@ -63,6 +64,7 @@ export default function Navbar() {
           <div className="md:hidden relative">
             <button
               type="button"
+              id="nav-mobile-toggle"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((s) => !s)}
@@ -86,6 +88,7 @@ export default function Navbar() {
                     <Link
                       key={link.href}
                       href={link.href}
+                      id={`nav-mobile-link-${link.label.toLowerCase()}`}
                       onClick={() => setMenuOpen(false)}
                       className={`block rounded-xl px-3 py-2 text-sm transition ${
                         pathname === link.href

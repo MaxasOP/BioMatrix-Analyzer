@@ -1,6 +1,27 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import AnalyzeClient from "./AnalyzeClient";
+
+export const metadata: Metadata = {
+  title: "Sequence Analysis Tool",
+  description:
+    "Paste DNA/RNA sequences to calculate GC content, analyze transcription/translation, map restriction sites, detect mutations, and get professional AI explanations.",
+  alternates: {
+    canonical: "/analyze",
+  },
+  openGraph: {
+    title: "Sequence Analysis Tool | BioMatrix AI",
+    description:
+      "Paste DNA/RNA sequences to calculate GC content, analyze transcription/translation, map restriction sites, detect mutations, and get professional AI explanations.",
+    url: "/analyze",
+  },
+  twitter: {
+    title: "Sequence Analysis Tool | BioMatrix AI",
+    description:
+      "Paste DNA/RNA sequences to calculate GC content, analyze transcription/translation, map restriction sites, detect mutations, and get professional AI explanations.",
+  },
+};
 
 export default function AnalyzePage() {
   return (
