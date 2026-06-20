@@ -29,9 +29,16 @@ async function getUserFromRequest(request: Request) {
 
 export async function POST(request: Request) {
   const { supabase, user } = await getUserFromRequest(request);
-  if (!supabase || !user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  // // if (!supabase || !user) {
+//   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+// }
+  // If user is not authenticated, we proceed without personalized context.
+  // The vector search will be skipped as there is no user ID.
+  // This allows the widget to be used anonymously.
+
+//   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+// }
+// No unauthorized return; continue processing
 
   let body: { messages?: ModelMessage[] } | null = null;
   try {
@@ -74,7 +81,7 @@ export async function POST(request: Request) {
 
   // 2. Vector search in database restricted to the current user
   let contextText = "No relevant saved analysis records found in your history.";
-  if (queryVector) {
+  if (queryVector && user) {
     try {
       const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
       const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -97,12 +104,12 @@ export async function POST(request: Request) {
               const analysis = row.payload?.analysis || {};
               const mutations = row.payload?.mutationSummary || {};
               return `Record #${i + 1} (Saved at: ${row.created_at}):
-- Preview: ${row.sequence_preview}
-- Type: ${analysis.sequenceType || "Unknown"}
-- Length: ${analysis.length || 0} bp
-- GC Content: ${analysis.gcPercentage ? Number(analysis.gcPercentage).toFixed(2) : "0"}%
-- ORFs: ${analysis.orfs ? analysis.orfs.length : 0}
-- Mutations: Total=${mutations.total || 0}, Subs=${mutations.substitutions || 0}, Ins=${mutations.insertions || 0}, Dels=${mutations.deletions || 0}`;
+ - Preview: ${row.sequence_preview}
+ - Type: ${analysis.sequenceType || "Unknown"}
+ - Length: ${analysis.length || 0} bp
+ - GC Content: ${analysis.gcPercentage ? Number(analysis.gcPercentage).toFixed(2) : "0"}%
+ - ORFs: ${analysis.orfs ? analysis.orfs.length : 0}
+ - Mutations: Total=${mutations.total || 0}, Subs=${mutations.substitutions || 0}, Ins=${mutations.insertions || 0}, Dels=${mutations.deletions || 0}`;
             })
             .join("\n\n");
         }
