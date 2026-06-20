@@ -3,6 +3,7 @@ import { IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import AssistantWidget from "@/components/AssistantWidget";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space",
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     icon: [
       { url: "/icon", type: "image/png", sizes: "512x512" },
       { url: "/favicon.ico", type: "image/x-icon", sizes: "any" },
-    ],
+      ],
     apple: [{ url: "/apple-icon", type: "image/png", sizes: "180x180" }],
     shortcut: ["/icon"],
   },
@@ -55,7 +56,9 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <AssistantWidget />
       </body>
     </html>
   );
 }
+

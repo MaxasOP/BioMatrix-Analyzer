@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { google } from "@ai-sdk/google";
+import { embed } from "ai";
 
 import { SUPABASE_TABLE, createSupabaseClient } from "@/lib/supabase";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
@@ -81,6 +83,37 @@ export async function POST(request: Request) {
   if (!body?.sequence_preview || !body.payload) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
+
+  // Construct textual representation of the sequence analysis to create embeddings
+  const payloadObj = (body.payload || {}) as Record<string, any>;
+  const analysis = payloadObj.analysis || {};
+  const mutationSummary = payloadObj.mutationSummary || {};
+
+  const textToEmbed = [
+    `Sequence Preview: ${body.sequence_preview}`,
+    `Type: ${analysis.sequenceType || "Unknown"}`,
+    `Length: ${analysis.length || 0} bases`,
+    `GC%: ${analysis.gcPercentage ? Number(analysis.gcPercentage).toFixed(2) : "0"}%`,
+    `ORFs found: ${analysis.orfs ? analysis.orfs.length : 0}`,
+    mutationSummary.total
+      ? `Mutations: Total=${mutationSummary.total}, Substitutions=${mutationSummary.substitutions || 0}, Insertions=${mutationSummary.insertions || 0}, Deletions=${mutationSummary.deletions || 0}`
+      : "No mutations compared/detected.",
+  ].join("\n");
+
+  let embeddingVector: number[] | null = null;
+  const geminiApiKey = process.env.GEMINI_API_KEY;
+  if (geminiApiKey) {
+    try {
+      const { embedding } = await embed({
+        model: google.textEmbeddingModel("text-embedding-004"),
+        value: textToEmbed,
+      });
+      embeddingVector = embedding;
+    } catch (err) {
+      console.error("Failed to generate embedding for sequence history", err);
+    }
+  }
+
   // Prefer using a server-side service role key to perform inserts so Row Level Security
   // policies do not reject the request due to missing auth context. If a service role key
   // is not available, attempt to insert using the user's token (may fail if RLS is enabled
@@ -103,6 +136,7 @@ export async function POST(request: Request) {
         user_id: user.id,
         sequence_preview: body.sequence_preview,
         payload: body.payload,
+        embedding: embeddingVector,
       })
       .select("id, created_at, sequence_preview, payload")
       .single();
@@ -122,6 +156,7 @@ export async function POST(request: Request) {
       user_id: user.id,
       sequence_preview: body.sequence_preview,
       payload: body.payload,
+      embedding: embeddingVector,
     })
     .select("id, created_at, sequence_preview, payload")
     .single();
