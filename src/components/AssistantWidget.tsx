@@ -35,6 +35,11 @@ export default function AssistantWidget() {
 
   const isLoading = status === "streaming";
 
+  useEffect(() => {
+    console.log("Rex debug - status:", status);
+    console.log("Rex debug - messages:", messages);
+  }, [messages, status]);
+
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (!chatInput.trim()) return;
