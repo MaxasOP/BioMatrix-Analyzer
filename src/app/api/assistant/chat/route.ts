@@ -3,7 +3,7 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 const google = createGoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY,
 });
-import { embed, streamText, type ModelMessage } from "ai";
+import { embed, streamText, type ModelMessage, convertToModelMessages } from "ai";
 import { NextResponse } from "next/server";
 
 import { SUPABASE_TABLE, createSupabaseClient } from "@/lib/supabase";
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
 // }
 // No unauthorized return; continue processing
 
-  let body: { messages?: ModelMessage[] } | null = null;
+  let body: { messages?: any[] } | null = null;
   try {
     body = await request.json();
   } catch {
@@ -52,7 +52,8 @@ export async function POST(request: Request) {
   }
 
   const messages = body?.messages || [];
-  const lastMessage = messages[messages.length - 1];
+  const modelMessages = await convertToModelMessages(messages);
+  const lastMessage = modelMessages[modelMessages.length - 1];
 
   if (!lastMessage) {
     return NextResponse.json({ error: "No messages found" }, { status: 400 });
@@ -135,7 +136,7 @@ ${contextText}`;
   const result = streamText({
     model: google("gemini-2.5-flash"),
     system: systemPrompt,
-    messages,
+    messages: modelMessages,
   });
 
   return result.toUIMessageStreamResponse();
