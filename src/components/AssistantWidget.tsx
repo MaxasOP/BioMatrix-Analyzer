@@ -50,7 +50,7 @@ export default function AssistantWidget() {
   }, [messages, isOpen]);
 
   // Only render if the user is authenticated (to match the API security)
-  if (!session) return null;
+  // if (!session) return null; // Widget rendered without auth gating
 
   return (
     <div className="fixed bottom-6 right-6 z-50 font-sans">
@@ -91,7 +91,7 @@ export default function AssistantWidget() {
             <div className="flex items-center gap-2.5">
               <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
               <div>
-                <h3 className="text-sm font-semibold text-slate-100">BioMatrix Assistant</h3>
+                <h3 className="text-sm font-semibold text-slate-100">Rex</h3>
                 <p className="text-[10px] text-slate-400">RAG History Search Enabled</p>
               </div>
             </div>
