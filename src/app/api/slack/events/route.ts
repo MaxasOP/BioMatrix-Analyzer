@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { WebClient } from "@slack/web-api";
-import { google } from "@ai-sdk/google";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
+
+const google = createGoogleGenerativeAI({
+  apiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+});
 import { embed, generateText } from "ai";
 import { createClient } from "@supabase/supabase-js";
 
