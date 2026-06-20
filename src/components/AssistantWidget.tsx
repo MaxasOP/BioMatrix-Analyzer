@@ -107,7 +107,7 @@ export default function AssistantWidget() {
               <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
               <div>
                 <h3 className="text-sm font-semibold text-slate-100">Rex</h3>
-                <p className="text-[10px] text-slate-400">RAG History Search Enabled</p>
+                <p className="text-[10px] text-slate-400">Your research companion</p>
               </div>
             </div>
             <button
@@ -147,11 +147,10 @@ export default function AssistantWidget() {
                 className={`flex flex-col ${m.role === "user" ? "items-end" : "items-start"}`}
               >
                 <div
-                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-6 ${
-                    m.role === "user"
+                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-6 ${m.role === "user"
                       ? "bg-cyan-500 text-slate-950 font-medium rounded-tr-none"
                       : "bg-white/5 text-slate-200 rounded-tl-none border border-white/5"
-                  }`}
+                    }`}
                 >
                   {m.parts.map((part, idx) => {
                     if (part.type === "text") {
