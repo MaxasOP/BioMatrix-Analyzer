@@ -24,7 +24,7 @@ export default function AssistantWidget() {
 
   const [chatInput, setChatInput] = useState("");
 
-  const { messages, sendMessage, status } = useChat({
+  const { messages, sendMessage, status, error } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/assistant/chat",
       headers: {
@@ -38,7 +38,10 @@ export default function AssistantWidget() {
   useEffect(() => {
     console.log("Rex debug - status:", status);
     console.log("Rex debug - messages:", messages);
-  }, [messages, status]);
+    if (error) {
+      console.error("Rex debug - error:", error);
+    }
+  }, [messages, status, error]);
 
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
