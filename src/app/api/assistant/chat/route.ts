@@ -1,5 +1,5 @@
 import { google } from "@ai-sdk/google";
-import { embed, streamText } from "ai";
+import { embed, streamText, type ModelMessage } from "ai";
 import { NextResponse } from "next/server";
 
 import { SUPABASE_TABLE, createSupabaseClient } from "@/lib/supabase";
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  let body: { messages?: { role: string; content: string }[] } | null = null;
+  let body: { messages?: ModelMessage[] } | null = null;
   try {
     body = await request.json();
   } catch {
@@ -47,14 +47,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "No messages found" }, { status: 400 });
   }
 
+  // Safely extract string content from possible shapes of content
+  let contentText = "";
+  if (typeof lastMessage.content === "string") {
+    contentText = lastMessage.content;
+  } else if (Array.isArray(lastMessage.content)) {
+    contentText = lastMessage.content
+      .map((part) => (part.type === "text" ? part.text : ""))
+      .join(" ");
+  }
+
   // 1. Generate query embedding for the last user message
   let queryVector: number[] | null = null;
   const geminiApiKey = process.env.GEMINI_API_KEY;
-  if (geminiApiKey) {
+  if (geminiApiKey && contentText.trim()) {
     try {
       const { embedding } = await embed({
         model: google.textEmbeddingModel("text-embedding-004"),
-        value: lastMessage.content,
+        value: contentText,
       });
       queryVector = embedding;
     } catch (err) {
@@ -117,5 +127,5 @@ ${contextText}`;
     messages,
   });
 
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }

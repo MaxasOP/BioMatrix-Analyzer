@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.83",
+    "@ai-sdk/react": "^3.0.210",
     "@google/generative-ai": "^0.24.1",
     "@slack/web-api": "^7.17.0",
     "@supabase/supabase-js": "^2.106.2",

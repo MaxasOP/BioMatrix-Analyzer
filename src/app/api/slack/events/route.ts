@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { waitUntil } from "next/server";
 import { WebClient } from "@slack/web-api";
 import { google } from "@ai-sdk/google";
 import { embed, generateText } from "ai";
@@ -67,12 +66,10 @@ export async function POST(request: Request) {
     const isDirectMessage = event.type === "message" && event.channel_type === "im";
 
     if (isAppMention || isDirectMessage) {
-      // Use Next.js waitUntil to run the heavy RAG/AI processing asynchronously
-      waitUntil(
-        handleSlackEventAsync(event, body.api_app_id).catch((err) => {
-          console.error("Error processing Slack event:", err);
-        })
-      );
+      // Fire-and-forget background execution
+      handleSlackEventAsync(event, body.api_app_id).catch((err) => {
+        console.error("Error processing Slack event:", err);
+      });
     }
   }
 

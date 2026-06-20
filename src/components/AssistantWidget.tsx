@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import type { Session } from "@supabase/supabase-js";
 import { createBrowserSupabaseClient } from "@/lib/supabase-browser";
 
@@ -21,12 +22,25 @@ export default function AssistantWidget() {
     return () => data.subscription.unsubscribe();
   }, []);
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-    api: "/api/assistant/chat",
-    headers: {
-      Authorization: session?.access_token ? `Bearer ${session.access_token}` : "",
-    },
+  const [chatInput, setChatInput] = useState("");
+
+  const { messages, sendMessage, status } = useChat({
+    transport: new DefaultChatTransport({
+      api: "/api/assistant/chat",
+      headers: {
+        Authorization: session?.access_token ? `Bearer ${session.access_token}` : "",
+      },
+    }),
   });
+
+  const isLoading = status === "streaming";
+
+  const handleFormSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!chatInput.trim()) return;
+    sendMessage({ text: chatInput });
+    setChatInput("");
+  };
 
   // Auto-scroll to the bottom of the message container
   useEffect(() => {
@@ -124,7 +138,12 @@ export default function AssistantWidget() {
                       : "bg-white/5 text-slate-200 rounded-tl-none border border-white/5"
                   }`}
                 >
-                  {m.content}
+                  {m.parts.map((part, idx) => {
+                    if (part.type === "text") {
+                      return <span key={idx}>{part.text}</span>;
+                    }
+                    return null;
+                  })}
                 </div>
               </div>
             ))}
@@ -142,16 +161,16 @@ export default function AssistantWidget() {
           </div>
 
           {/* Input Form */}
-          <form onSubmit={handleSubmit} className="border-t border-white/5 p-4 flex gap-2">
+          <form onSubmit={handleFormSubmit} className="border-t border-white/5 p-4 flex gap-2">
             <input
-              value={input}
-              onChange={handleInputChange}
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
               placeholder="Query history or ask biology..."
               className="flex-1 rounded-xl border border-white/10 bg-slate-900 px-3.5 py-2 text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-cyan-500"
             />
             <button
               type="submit"
-              disabled={isLoading || !input.trim()}
+              disabled={isLoading || !chatInput.trim()}
               className="flex items-center justify-center rounded-xl bg-cyan-500 px-3.5 text-slate-950 transition hover:bg-cyan-400 disabled:opacity-50"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
