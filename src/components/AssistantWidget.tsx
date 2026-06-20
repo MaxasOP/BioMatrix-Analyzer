@@ -24,12 +24,19 @@ export default function AssistantWidget() {
 
   const [chatInput, setChatInput] = useState("");
 
+  // Use a stable ref for headers so that DefaultChatTransport reads the updated token on subsequent requests
+  const headersRef = useRef<{ Authorization: string }>({ Authorization: "" });
+
+  if (session?.access_token) {
+    headersRef.current.Authorization = `Bearer ${session.access_token}`;
+  } else {
+    headersRef.current.Authorization = "";
+  }
+
   const { messages, sendMessage, status, error } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/assistant/chat",
-      headers: {
-        Authorization: session?.access_token ? `Bearer ${session.access_token}` : "",
-      },
+      headers: headersRef.current,
     }),
   });
 
