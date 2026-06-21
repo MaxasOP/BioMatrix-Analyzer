@@ -13,12 +13,13 @@ export default function AIAgentClient() {
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
 
   useEffect(() => {
+    if (!supabase) return;
     supabase.auth.getUser().then(({ data }) => {
       const email = data?.user?.email ?? "";
       const adminList = (process.env.NEXT_PUBLIC_ADMIN_EMAILS ?? "").split(",").map(e => e.trim().toLowerCase());
       setIsAdmin(adminList.includes(email.toLowerCase()));
     });
-  }, []);
+  }, [supabase]);
 
 
 

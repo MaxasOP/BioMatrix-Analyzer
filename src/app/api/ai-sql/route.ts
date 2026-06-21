@@ -1,4 +1,4 @@
-import { streamText } from 'ai';
+import { generateText } from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { createAdminSupabaseClient } from '@/lib/supabase-admin';
 
@@ -17,8 +17,9 @@ export async function POST(req: Request) {
     }
 
     // Generate SQL using Gemini (or any LLM supported by Vercel AI SDK)
-    const model = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY! });
-    const { text } = await streamText({ model, prompt }).text();
+    const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY! });
+    const model = google('gemini-2.5-flash');
+    const { text } = await generateText({ model, prompt });
     const sql = text.trim();
 
     // Optional: Execute the SQL against Supabase using the admin client.
