@@ -202,6 +202,14 @@ export default function ProfileClient() {
           >
             Open analyzer
           </Link>
+          // Admin Dashboard link (added per request)
+          <Link
+            href="/admin"
+            id="link-profile-admin-dashboard"
+            className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10"
+          >
+            Admin Dashboard
+          </Link>
         </div>
       </section>
     </main>
