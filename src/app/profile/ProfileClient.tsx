@@ -202,7 +202,6 @@ export default function ProfileClient() {
           >
             Open analyzer
           </Link>
-          // Admin Dashboard link (added per request)
           <Link
             href="/admin"
             id="link-profile-admin-dashboard"

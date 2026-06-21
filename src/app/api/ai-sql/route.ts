@@ -19,10 +19,17 @@ export async function POST(req: Request) {
     // Generate SQL using Gemini (or any LLM supported by Vercel AI SDK)
     const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY! });
     const model = google('gemini-2.5-flash');
-    const { text } = await generateText({ model, prompt });
-    const sql = text.trim();
-
-    // Optional: Execute the SQL against Supabase using the admin client.
+    const { text } = await generateText({ 
+      model, 
+      system: 'You are a PostgreSQL expert. The user wants to query the `analysis_history` table. Return ONLY a valid SELECT SQL query. Do not wrap it in markdown block quotes (```sql).',
+      prompt 
+    });
+    // Remove potential markdown code block wrappers
+    let sql = text.trim();
+    if (sql.startsWith('```sql')) sql = sql.substring(6);
+    if (sql.startsWith('```')) sql = sql.substring(3);
+    if (sql.endsWith('```')) sql = sql.substring(0, sql.length - 3);
+    sql = sql.trim();
     // For safety, we only allow SELECT queries on the `analysis_history` table.
     const isSelect = /^\s*SELECT\s+/i.test(sql);
     if (!isSelect) {
