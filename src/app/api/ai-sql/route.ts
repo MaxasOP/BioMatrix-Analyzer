@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     const model = google('gemini-2.5-flash');
     const { text } = await generateText({ 
       model, 
-      system: 'You are a PostgreSQL expert. The user wants to query the `analysis_history` table. Return ONLY a valid SELECT SQL query. Do not wrap it in markdown block quotes (```sql).',
+      system: 'You are a PostgreSQL expert. The user wants to query the `analysis_history` table. Return ONLY a valid SELECT SQL query. Do not wrap it in markdown block quotes (```sql). The table schema is: id (uuid), created_at (timestamptz), user_id (uuid), sequence_preview (text), payload (jsonb). The `payload` contains { "analysis": { "sequenceType": string, "length": number, "gcPercentage": number, "counts": object }, "mutationSummary": { "total": number, "substitutions": number, "insertions": number, "deletions": number } }. If querying metrics, extract from payload and explicitly cast them, e.g., (payload->\'analysis\'->>\'gcPercentage\')::numeric.',
       prompt 
     });
     // Remove potential markdown code block wrappers
