@@ -30,6 +30,8 @@ export async function POST(req: Request) {
     if (sql.startsWith('```')) sql = sql.substring(3);
     if (sql.endsWith('```')) sql = sql.substring(0, sql.length - 3);
     sql = sql.trim();
+    if (sql.endsWith(';')) sql = sql.substring(0, sql.length - 1);
+    sql = sql.trim();
     // For safety, we only allow SELECT queries on the `analysis_history` table.
     const isSelect = /^\s*SELECT\s+/i.test(sql);
     if (!isSelect) {
