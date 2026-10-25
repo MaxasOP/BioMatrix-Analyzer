@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import BioMatrixMark from "@/components/BioMatrixMark";
 
 const links = [
   { href: "/", label: "Index", code: "00" }, { href: "/analyze", label: "Analyzer", code: "01" },
@@ -14,7 +15,7 @@ export default function Navbar() {
   return <header className="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--paper)]">
     <div className="mx-auto flex h-16 max-w-7xl items-stretch justify-between px-4 sm:px-6">
       <Link href="/" id="nav-logo-link" className="flex items-center gap-3 border-x border-[var(--border-subtle)] px-4">
-        <span className="grid h-7 w-7 grid-cols-2 gap-[2px]" aria-hidden="true"><i className="bg-[#b8f34a]"/><i className="bg-[#76a7ff]"/><i className="bg-[#ffc857]"/><i className="bg-[#ff795e]"/></span>
+        <BioMatrixMark className="h-9 w-9 text-white" />
         <span><strong className="block text-sm tracking-[-0.02em]">BIOMATRIX</strong><small className="block font-mono text-[9px] tracking-[.18em] text-[var(--ink-soft)]">SEQUENCE LAB</small></span>
       </Link>
       <nav className="hidden items-stretch md:flex" aria-label="Primary navigation">{links.map(link => { const active = pathname === link.href; return <Link key={link.href} href={link.href} id={`nav-link-${link.label.toLowerCase()}`} className={`flex min-w-24 flex-col justify-center border-r border-[var(--border-subtle)] px-4 text-xs ${active ? "bg-[var(--accent)] text-[#0b0e0d]" : "text-[var(--ink-soft)] hover:bg-[var(--surface-soft)] hover:text-[var(--ink)]"}`}><span className="font-mono text-[9px] opacity-60">{link.code}</span><span>{link.label}</span></Link>})}</nav>
