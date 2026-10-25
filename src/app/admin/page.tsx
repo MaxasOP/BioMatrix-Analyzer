@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import AIAgentClient from "./AIAgentClient";
 
 export const metadata: Metadata = {
-  title: "AI‑SQL Admin Dashboard",
+  title: "Administrative Data Query Console",
   description: "Natural‑language to SQL interface for BioMatrix analytics",
 };
 

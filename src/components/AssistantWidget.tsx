@@ -93,7 +93,7 @@ export default function AssistantWidget() {
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="rounded-full p-1 text-slate-400 hover:bg-white/5 hover:text-slate-100 transition-colors"
+              className="border border-transparent p-1 text-slate-400 hover:border-[var(--border-subtle)] hover:text-slate-100"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -105,7 +105,7 @@ export default function AssistantWidget() {
           <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 scrollbar-thin scrollbar-thumb-white/5">
             {messages.length === 0 && (
               <div className="flex h-full flex-col items-center justify-center text-center px-4 py-8">
-                <div className="rounded-full bg-cyan-500/10 p-3 text-cyan-400">
+                <div className="border border-[var(--border-subtle)] p-3 text-[var(--accent)]">
                   <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
@@ -115,7 +115,7 @@ export default function AssistantWidget() {
                     />
                   </svg>
                 </div>
-                <h4 className="mt-3 text-sm font-medium text-slate-200">Ask your History</h4>
+                <h4 className="mt-3 text-sm font-medium text-slate-200">Query the archive</h4>
                 <p className="mt-1 text-xs text-slate-400 leading-relaxed">
                   Query your saved DNA/RNA sequence runs, mutation reports, or general bioinformatics concepts.
                 </p>
@@ -129,8 +129,8 @@ export default function AssistantWidget() {
               >
                 <div
                   className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-6 ${m.role === "user"
-                      ? "bg-cyan-500 text-slate-950 font-medium rounded-tr-none"
-                      : "bg-white/5 text-slate-200 rounded-tl-none border border-white/5"
+                      ? "bg-[var(--accent)] text-[#0b0e0d] font-medium"
+                      : "bg-[var(--surface)] text-slate-200 border border-[var(--border-subtle)]"
                     }`}
                 >
                   {m.parts.map((part, idx) => {
@@ -146,10 +146,9 @@ export default function AssistantWidget() {
             {isLoading && (
               <div className="flex items-center gap-2 text-xs text-slate-400">
                 <span className="flex h-2 w-2 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                  <span className="relative inline-flex h-2 w-2 bg-[var(--accent)]"></span>
                 </span>
-                BioMatrix AI is looking up history...
+                Searching the analysis archive…
               </div>
             )}
             <div ref={messagesEndRef} />
@@ -161,12 +160,12 @@ export default function AssistantWidget() {
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
               placeholder="Query history or ask biology..."
-              className="flex-1 rounded-xl border border-white/10 bg-slate-900 px-3.5 py-2 text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-cyan-500"
+              className="flex-1 border border-[var(--border-subtle)] bg-[#080a09] px-3.5 py-2 text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-[var(--accent)]"
             />
             <button
               type="submit"
               disabled={isLoading || !chatInput.trim()}
-              className="flex items-center justify-center rounded-xl bg-cyan-500 px-3.5 text-slate-950 transition hover:bg-cyan-400 disabled:opacity-50"
+              className="flex items-center justify-center bg-[var(--accent)] px-3.5 text-[#0b0e0d] hover:bg-[var(--accent-strong)] disabled:opacity-50"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />

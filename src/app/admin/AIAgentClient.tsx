@@ -51,9 +51,9 @@ export default function AIAgentClient() {
 
 if (isAdmin === null) {
     return (
-      <main className="mx-auto max-w-4xl px-6 py-12">
-        <section className="rounded-[32px] bg-white/5 border border-white/10 p-8 shadow-[0_18px_60px_rgba(0,0,0,0.12)] backdrop-blur-xl">
-          <p className="text-slate-300">Checking admin permissions…</p>
+      <main className="mx-auto max-w-7xl border-x border-[var(--border-subtle)] px-6 py-12">
+        <section className="border border-[var(--border-subtle)] bg-[var(--surface)] p-8">
+          <p className="font-mono text-xs uppercase tracking-wider text-[var(--ink-soft)]">Checking administrative access…</p>
         </section>
       </main>
     );
@@ -61,23 +61,28 @@ if (isAdmin === null) {
 
   if (!isAdmin) {
     return (
-      <main className="mx-auto max-w-4xl px-6 py-12">
-        <section className="rounded-[32px] bg-white/5 border border-white/10 p-8 shadow-[0_18px_60px_rgba(0,0,0,0.12)] backdrop-blur-xl">
-          <h2 className="text-xl font-semibold text-slate-200">Access Denied</h2>
-          <p className="mt-4 text-slate-300">You do not have permission to use the AI‑SQL admin dashboard.</p>
+      <main className="mx-auto max-w-7xl border-x border-[var(--border-subtle)] px-6 py-12">
+        <section className="border border-[var(--border-subtle)] bg-[var(--surface)] p-8">
+          <p className="font-mono text-xs uppercase tracking-wider text-red-300">Access denied</p>
+          <h2 className="mt-3 text-2xl font-semibold text-slate-200">Administrative query console</h2>
+          <p className="mt-4 text-slate-300">This account is not included in the administrative access list.</p>
         </section>
       </main>
     );
   }
 
   return (
-    <main className="mx-auto max-w-4xl px-6 py-12">
-      <section className="rounded-[32px] bg-white/5 border border-white/10 p-8 shadow-[0_18px_60px_rgba(0,0,0,0.12)] backdrop-blur-xl">
-        <h1 className="text-3xl font-semibold mb-4 text-slate-100">AI‑SQL Agent</h1>
-        <p className="mb-6 text-slate-300">Ask natural‑language questions about your analysis data; the AI generates a safe SELECT statement and returns matching rows.</p>
+    <main className="mx-auto max-w-7xl border-x border-[var(--border-subtle)] px-4 py-6 sm:px-6">
+      <header className="mb-6 flex flex-col gap-4 border-b border-[var(--border-subtle)] pb-6 sm:flex-row sm:items-end sm:justify-between">
+        <div><p className="lab-kicker">System / administration</p><h1 className="mt-3 text-3xl font-semibold tracking-[-.04em] sm:text-5xl">Data query console</h1></div>
+        <p className="max-w-md text-sm leading-6 text-[var(--ink-soft)]">Translate a plain-language archive question into a read-only database query.</p>
+      </header>
+      <section className="grid border border-[var(--border-subtle)] lg:grid-cols-[.46fr_.54fr]">
+        <div className="border-b border-[var(--border-subtle)] bg-[var(--surface)] p-5 lg:border-b-0 lg:border-r sm:p-6">
+        <h2 className="font-mono text-xs uppercase tracking-wider text-[var(--ink-soft)]">Query request</h2>
         <form onSubmit={handleSubmit} className="grid gap-4">
           <textarea
-            className="rounded-xl border border-white/10 bg-slate-950/60 p-4 text-slate-100 placeholder:text-slate-500 focus:border-cyan-400 outline-none transition"
+            className="mt-4 border border-[var(--border-subtle)] bg-[#080a09] p-4 text-slate-100 placeholder:text-slate-500 focus:border-[var(--accent)] outline-none"
             rows={4}
             placeholder="e.g. Show the last 10 DNA analyses with GC% > 60"
             value={prompt}
@@ -86,7 +91,7 @@ if (isAdmin === null) {
           />
           <button
             type="submit"
-            className="self-start rounded-full bg-cyan-500 px-6 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-70"
+            className="self-start bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-[#0b0e0d] hover:bg-[var(--accent-strong)] disabled:opacity-70"
             disabled={loading || !prompt.trim()}
           >
             {loading ? "Generating…" : "Run query"}
@@ -95,18 +100,23 @@ if (isAdmin === null) {
         {error && (
           <p className="mt-4 text-red-400">Error: {error}</p>
         )}
+        </div>
+        <div className="p-5 sm:p-6">
+        <h2 className="font-mono text-xs uppercase tracking-wider text-[var(--ink-soft)]">Read-only output</h2>
         {sql && (
-          <div className="mt-6">
-            <h2 className="text-xl font-medium text-slate-200">Generated SQL</h2>
-            <pre className="mt-2 rounded-md bg-slate-900/70 p-4 text-sm text-slate-100 overflow-x-auto">{sql}</pre>
+          <div className="mt-5">
+            <h3 className="font-mono text-[10px] uppercase tracking-wider text-[var(--accent)]">Generated SQL</h3>
+            <pre className="mt-2 border border-[var(--border-subtle)] bg-[#080a09] p-4 font-mono text-sm text-slate-100 overflow-x-auto">{sql}</pre>
           </div>
         )}
         {result && (
           <div className="mt-6">
-            <h2 className="text-xl font-medium text-slate-200">Result</h2>
-            <pre className="mt-2 rounded-md bg-slate-900/70 p-4 text-sm text-slate-100 overflow-x-auto">{JSON.stringify(result, null, 2)}</pre>
+            <h3 className="font-mono text-[10px] uppercase tracking-wider text-[var(--accent)]">Result</h3>
+            <pre className="mt-2 border border-[var(--border-subtle)] bg-[#080a09] p-4 font-mono text-sm text-slate-100 overflow-x-auto">{JSON.stringify(result, null, 2)}</pre>
           </div>
         )}
+        {!sql && !result && <p className="mt-5 text-sm text-[var(--ink-soft)]">Query output will appear here.</p>}
+        </div>
       </section>
     </main>
   );

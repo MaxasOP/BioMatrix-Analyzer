@@ -9,13 +9,13 @@ export const metadata: Metadata = {
     canonical: "/history",
   },
   openGraph: {
-    title: "Cloud Analysis History | BioMatrix AI",
+    title: "Analysis Archive | BioMatrix Sequence Lab",
     description:
       "Access and manage your saved bioinformatics analyses. View past sequence properties, mutation summaries, and restore your research workspaces.",
     url: "/history",
   },
   twitter: {
-    title: "Cloud Analysis History | BioMatrix AI",
+    title: "Analysis Archive | BioMatrix Sequence Lab",
     description:
       "Access and manage your saved bioinformatics analyses. View past sequence properties, mutation summaries, and restore your research workspaces.",
   },

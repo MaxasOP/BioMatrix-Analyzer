@@ -35,8 +35,8 @@ const formatAiResponse = (text: string) =>
 
 function BusyOverlay({ label }: { label: string }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 px-6 backdrop-blur-md">
-      <div className="flex max-w-md flex-col items-center gap-4 rounded-[28px] border border-white/10 bg-slate-950/85 p-8 text-center shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 px-6">
+      <div className="flex max-w-md flex-col items-center gap-4 border border-[var(--border-subtle)] bg-[var(--paper)] p-8 text-center">
         <span className="scale-[0.7] origin-center">
           <HamsterLoader />
         </span>
@@ -285,7 +285,7 @@ export default function AnalyzeClient() {
       ? "border-red-400/40 bg-red-500/10 text-red-200"
       : status.type === "success"
         ? "border-emerald-400/40 bg-emerald-500/10 text-emerald-200"
-        : "border-white/10 bg-white/5 text-slate-200"
+        : "border-[var(--border-subtle)] bg-[var(--surface)] text-slate-200"
     : "";
 
   return (
@@ -390,16 +390,16 @@ export default function AnalyzeClient() {
             {mutationSummary ? (
               <div className="grid gap-3">
                 <div className="flex flex-wrap gap-3 text-sm">
-                  <span className="rounded-full bg-white/5 px-3 py-1 text-slate-200">Total: {mutationSummary.total}</span>
-                  <span className="rounded-full bg-white/5 px-3 py-1 text-slate-200">Subs: {mutationSummary.substitutions}</span>
-                  <span className="rounded-full bg-white/5 px-3 py-1 text-slate-200">Insertions: {mutationSummary.insertions}</span>
-                  <span className="rounded-full bg-white/5 px-3 py-1 text-slate-200">Deletions: {mutationSummary.deletions}</span>
+                  <span className="border border-[var(--border-subtle)] px-3 py-1 font-mono text-slate-200">Total: {mutationSummary.total}</span>
+                  <span className="border border-[var(--border-subtle)] px-3 py-1 font-mono text-slate-200">Subs: {mutationSummary.substitutions}</span>
+                  <span className="border border-[var(--border-subtle)] px-3 py-1 font-mono text-slate-200">Insertions: {mutationSummary.insertions}</span>
+                  <span className="border border-[var(--border-subtle)] px-3 py-1 font-mono text-slate-200">Deletions: {mutationSummary.deletions}</span>
                 </div>
                 <div className="space-y-2">
                   {mutations.slice(0, 8).map((mutation) => (
                     <div
                       key={`${mutation.position}-${mutation.type}`}
-                      className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-sm"
+                      className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border-subtle)] px-3 py-2 text-sm"
                     >
                       <span className="font-mono text-slate-100">
                         {mutation.ref} -&gt; {mutation.sample}

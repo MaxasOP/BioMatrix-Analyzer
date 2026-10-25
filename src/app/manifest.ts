@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "BioMatrix AI",
+    name: "BioMatrix Sequence Lab",
     short_name: "BioMatrix",
     description:
-      "Bioinformatics platform for sequence analysis, mutation detection, and AI explanations.",
+      "DNA and RNA sequence analysis workbench for composition, translation, mutation detection, and interpretation.",
     start_url: "/",
     display: "standalone",
     background_color: "#f4f6ff",

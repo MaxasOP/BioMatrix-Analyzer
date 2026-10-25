@@ -4,20 +4,20 @@ import ProfileClient from "./ProfileClient";
 export const metadata: Metadata = {
   title: "User Profile & Cloud Workspace",
   description:
-    "Manage your BioMatrix AI account. Sign in with secure passwordless OTP to save your sequence analysis workspace and sync history across devices.",
+    "Manage your BioMatrix Sequence Lab account and saved analysis archive.",
   alternates: {
     canonical: "/profile",
   },
   openGraph: {
-    title: "User Profile & Cloud Workspace | BioMatrix AI",
+    title: "Research Account | BioMatrix Sequence Lab",
     description:
-      "Manage your BioMatrix AI account. Sign in with secure passwordless OTP to save your sequence analysis workspace and sync history across devices.",
+      "Manage your BioMatrix Sequence Lab account and saved analysis archive.",
     url: "/profile",
   },
   twitter: {
-    title: "User Profile & Cloud Workspace | BioMatrix AI",
+    title: "Research Account | BioMatrix Sequence Lab",
     description:
-      "Manage your BioMatrix AI account. Sign in with secure passwordless OTP to save your sequence analysis workspace and sync history across devices.",
+      "Manage your BioMatrix Sequence Lab account and saved analysis archive.",
   },
 };
 

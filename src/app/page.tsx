@@ -2,25 +2,25 @@ import type { Metadata } from "next";
 import HomeClient from "./HomeClient";
 
 export const metadata: Metadata = {
-  title: "BioMatrix AI - Bioinformatics Sequence & Mutation Analyzer",
+  title: "BioMatrix Sequence Lab - DNA/RNA Analysis Workbench",
   description:
-    "Explore and analyze DNA and RNA sequences with BioMatrix AI. Detect mutations, translate codons, find open reading frames (ORFs), and get instant AI-generated interpretations.",
+    "Inspect DNA and RNA sequences, compare mutations, translate codons, and locate open reading frames in one focused workbench.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "BioMatrix AI - Bioinformatics Sequence & Mutation Analyzer",
+    title: "BioMatrix Sequence Lab - DNA/RNA Analysis Workbench",
     description:
-      "Explore and analyze DNA and RNA sequences with BioMatrix AI. Detect mutations, translate codons, find open reading frames (ORFs), and get instant AI-generated interpretations.",
+      "Inspect DNA and RNA sequences, compare mutations, translate codons, and locate open reading frames in one focused workbench.",
     url: "/",
-    siteName: "BioMatrix AI",
+    siteName: "BioMatrix Sequence Lab",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "BioMatrix AI - Bioinformatics Sequence & Mutation Analyzer",
+    title: "BioMatrix Sequence Lab - DNA/RNA Analysis Workbench",
     description:
-      "Explore and analyze DNA and RNA sequences with BioMatrix AI. Detect mutations, translate codons, find open reading frames (ORFs), and get instant AI-generated interpretations.",
+      "Inspect DNA and RNA sequences, compare mutations, translate codons, and locate open reading frames in one focused workbench.",
   },
 };
 

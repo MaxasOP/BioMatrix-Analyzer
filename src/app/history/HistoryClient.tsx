@@ -190,26 +190,23 @@ export default function HistoryClient() {
   };
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
-      <section className="grid gap-6 rounded-[28px] border border-white/10 bg-white/5 p-5 shadow-[0_18px_60px_rgba(0,0,0,0.12)] backdrop-blur-xl sm:rounded-[32px] sm:p-8">
-        <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-cyan-300">History</p>
-          <h1 className="mt-3 text-3xl font-semibold leading-tight sm:text-5xl">Cloud history</h1>
-          <p className="mt-4 max-w-2xl text-sm leading-7 text-[var(--ink-soft)] sm:text-base">
-            You can view and access your saved analyses here. 
-          </p>
-        </div>
+    <main className="mx-auto max-w-7xl border-x border-[var(--border-subtle)] px-4 py-6 sm:px-6">
+      <header className="mb-6 flex flex-col gap-4 border-b border-[var(--border-subtle)] pb-6 sm:flex-row sm:items-end sm:justify-between">
+        <div><p className="lab-kicker">Module 03 / archive</p><h1 className="mt-3 text-3xl font-semibold tracking-[-.04em] sm:text-5xl">Analysis archive</h1></div>
+        <p className="max-w-md text-sm leading-6 text-[var(--ink-soft)]">Restore saved sequence runs with their comparison input and calculated output intact.</p>
+      </header>
+      <section className="grid gap-0 border border-[var(--border-subtle)]">
 
         {session ? (
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-5 text-sm text-slate-200">
-            Signed in as {session.user.email ?? "user"}
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border-subtle)] bg-[var(--surface)] p-4 text-sm text-slate-200">
+            <span>Signed in as {session.user.email ?? "user"}</span><span className="font-mono text-[9px] uppercase text-[var(--accent)]">Archive connected</span>
           </div>
         ) : (
-          <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-4 sm:p-5">
+          <div className="grid gap-3 border-b border-[var(--border-subtle)] bg-[var(--surface)] p-4 sm:p-5">
             <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
               <input
                 id="input-history-email"
-                className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-400"
+                className="border border-[var(--border-subtle)] bg-[#080a09] px-4 py-3 text-slate-100 outline-none placeholder:text-slate-500 focus:border-[var(--accent)]"
                 type="email"
                 placeholder="you@example.com"
                 aria-label="Email address"
@@ -219,7 +216,7 @@ export default function HistoryClient() {
               <button
                 type="button"
                 id="btn-history-send-code"
-                className="rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-70 cursor-pointer"
+                className="bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[#0b0e0d] hover:bg-[var(--accent-strong)] disabled:opacity-70 cursor-pointer"
                 onClick={sendOtp}
                 disabled={busy}
               >
@@ -231,7 +228,7 @@ export default function HistoryClient() {
               <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
                 <input
                   id="input-history-otp"
-                  className="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-400"
+                  className="border border-[var(--border-subtle)] bg-[#080a09] px-4 py-3 text-slate-100 outline-none placeholder:text-slate-500 focus:border-[var(--accent)]"
                   type="text"
                   inputMode="numeric"
                   autoComplete="one-time-code"
@@ -243,7 +240,7 @@ export default function HistoryClient() {
                 <button
                   type="button"
                   id="btn-history-verify-code"
-                  className="rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-70 cursor-pointer"
+                  className="bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[#0b0e0d] hover:bg-[var(--accent-strong)] disabled:opacity-70 cursor-pointer"
                   onClick={verifyOtp}
                   disabled={busy}
                 >
@@ -254,14 +251,14 @@ export default function HistoryClient() {
           </div>
         )}
 
-        {notice && <p className="text-sm text-[var(--ink-soft)]">{notice}</p>}
+        {notice && <p className="border-b border-[var(--border-subtle)] px-5 py-4 text-sm text-[var(--ink-soft)]">{notice}</p>}
 
         {history.length === 0 ? (
-          <p className="text-sm text-[var(--ink-soft)]">No saved analyses yet.</p>
+          <div className="p-8 text-center"><p className="font-mono text-xs uppercase tracking-wider text-[var(--ink-soft)]">No saved analyses</p><p className="mt-2 text-sm text-[var(--ink-soft)]">Completed runs will appear here as an indexed register.</p></div>
         ) : (
-          <div className="grid gap-3">
+          <div className="divide-y divide-[var(--border-subtle)]">
             {history.map((item, index) => (
-              <div key={item.id ?? item.sequence_preview} className="rounded-3xl border border-white/10 bg-white/5 p-4 sm:p-5">
+              <article key={item.id ?? item.sequence_preview} className="p-4 hover:bg-[var(--surface)] sm:p-5">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-slate-100">
@@ -275,14 +272,14 @@ export default function HistoryClient() {
                     <Link
                       href={`/analyze?sequence=${encodeURIComponent(item.payload.analysis.sequence)}${item.payload.compareSequence ? `&compare=${encodeURIComponent(item.payload.compareSequence)}` : ""}`}
                       id={`btn-history-restore-${item.id || index}`}
-                      className="rounded-full border border-cyan-400/40 bg-cyan-400/10 px-4 py-2 text-center text-xs font-semibold text-cyan-200 transition hover:bg-cyan-400/20"
+                      className="border border-[var(--accent)] px-4 py-2 text-center text-xs font-semibold text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[#0b0e0d]"
                     >
                       Restore in analyzer
                     </Link>
                     <button
                       type="button"
                       id={`btn-history-copy-${item.id || index}`}
-                      className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-slate-200 transition hover:bg-white/10 cursor-pointer"
+                      className="border border-[var(--border-subtle)] px-4 py-2 text-xs font-semibold text-slate-200 hover:bg-[var(--surface-soft)] cursor-pointer"
                       onClick={async () => {
                         await navigator.clipboard.writeText(item.payload.analysis.sequence);
                         setNotice("Sequence copied to clipboard.");
@@ -294,7 +291,7 @@ export default function HistoryClient() {
                       <button
                         type="button"
                         id={`btn-history-delete-${item.id || index}`}
-                        className="rounded-full border border-red-400/30 bg-red-500/10 px-4 py-2 text-xs font-semibold text-red-200 transition hover:bg-red-500/20 cursor-pointer"
+                        className="border border-red-400/40 px-4 py-2 text-xs font-semibold text-red-300 hover:bg-red-500/10 cursor-pointer"
                         onClick={() => openDeleteDialog(item)}
                       >
                         Delete
@@ -305,7 +302,7 @@ export default function HistoryClient() {
                 <p className="mt-3 break-all font-mono text-[11px] leading-5 text-slate-300 sm:text-xs">
                   {item.sequence_preview}
                 </p>
-              </div>
+              </article>
             ))}
           </div>
         )}
@@ -315,11 +312,11 @@ export default function HistoryClient() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="delete-history-title"
-            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 px-6 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 px-6"
             onClick={closeDeleteDialog}
           >
             <div
-              className="w-full max-w-lg rounded-[28px] border border-white/10 bg-[var(--paper)] p-5 text-[var(--ink)] shadow-[0_24px_80px_rgba(0,0,0,0.4)] sm:p-6"
+              className="w-full max-w-lg border border-[var(--border-subtle)] bg-[var(--paper)] p-5 text-[var(--ink)] sm:p-6"
               onClick={(event) => event.stopPropagation()}
             >
               <p className="text-xs uppercase tracking-[0.35em] text-red-400">Delete saved analysis</p>
@@ -339,7 +336,7 @@ export default function HistoryClient() {
                 <button
                   type="button"
                   id="btn-history-delete-cancel"
-                  className="rounded-full border border-[var(--border-subtle)] bg-[var(--surface)] px-5 py-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--surface-soft)] cursor-pointer"
+                  className="border border-[var(--border-subtle)] bg-[var(--surface)] px-5 py-3 text-sm font-semibold text-[var(--ink)] hover:bg-[var(--surface-soft)] cursor-pointer"
                   onClick={closeDeleteDialog}
                   disabled={deleting}
                 >
@@ -348,7 +345,7 @@ export default function HistoryClient() {
                 <button
                   type="button"
                   id="btn-history-delete-confirm"
-                  className="rounded-full bg-red-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-500 disabled:opacity-70 cursor-pointer"
+                  className="border border-red-500 bg-red-600 px-5 py-3 text-sm font-semibold text-white hover:bg-red-500 disabled:opacity-70 cursor-pointer"
                   onClick={deleteHistoryItem}
                   disabled={deleting}
                 >
@@ -359,18 +356,18 @@ export default function HistoryClient() {
           </div>
         )}
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <div className="flex flex-col gap-3 border-t border-[var(--border-subtle)] p-4 sm:flex-row sm:flex-wrap">
           <Link
             href="/profile"
             id="link-history-open-profile"
-            className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-center text-sm font-semibold text-slate-100 transition hover:bg-white/10"
+            className="border border-[var(--border-subtle)] px-5 py-3 text-center text-sm font-semibold text-slate-100 hover:bg-[var(--surface-soft)]"
           >
             Open profile
           </Link>
           <Link
             href="/"
             id="link-history-back-overview"
-            className="rounded-full bg-cyan-500 px-5 py-3 text-center text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
+            className="border-b border-[var(--ink-soft)] px-2 py-3 text-center text-sm text-[var(--ink-soft)] hover:text-[var(--ink)]"
           >
             Back to overview
           </Link>
