@@ -69,45 +69,26 @@ export default function AssistantWidget() {
 
   return (
     <div className="fixed bottom-6 right-6 z-50 font-sans">
-      {/* Floating Action Button */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="group relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-tr from-cyan-500 to-emerald-400 p-[1px] shadow-[0_8px_32px_rgba(6,182,212,0.35)] transition-all hover:scale-105 active:scale-95"
+          className="flex items-center gap-3 border border-[var(--accent)] bg-[var(--paper)] px-4 py-3 font-mono text-[10px] uppercase tracking-[.14em] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[#0b0e0d]"
           aria-label="Open AI Assistant"
         >
-          <div className="flex h-full w-full items-center justify-center rounded-full bg-slate-950 transition-colors group-hover:bg-slate-950/90">
-            <svg
-              className="h-6 w-6 text-cyan-400 transition-transform group-hover:rotate-12"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-              />
-            </svg>
-          </div>
-          <span className="absolute -top-1 -right-1 flex h-3 w-3">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
-          </span>
+          <span className="h-2 w-2 bg-[var(--accent)]" aria-hidden="true" /> Query archive
         </button>
       )}
 
       {/* Floating Chat Window */}
       {isOpen && (
-        <div className="flex h-[520px] w-[360px] flex-col rounded-[24px] border border-white/10 bg-slate-950/80 shadow-[0_24px_64px_rgba(0,0,0,0.5)] backdrop-blur-xl animate-in slide-in-from-bottom-5 duration-200">
+        <div className="flex h-[520px] w-[min(360px,calc(100vw-48px))] flex-col border border-[var(--border-subtle)] bg-[var(--paper)]">
           {/* Header */}
           <div className="flex items-center justify-between border-b border-white/5 px-5 py-4">
             <div className="flex items-center gap-2.5">
-              <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <div className="h-2 w-2 bg-[var(--accent)]" />
               <div>
                 <h3 className="text-sm font-semibold text-slate-100">Rex</h3>
-                <p className="text-[10px] text-slate-400">Your research companion</p>
+                <p className="font-mono text-[9px] uppercase tracking-wider text-slate-400">Saved-run query</p>
               </div>
             </div>
             <button

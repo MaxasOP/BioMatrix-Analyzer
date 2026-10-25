@@ -289,53 +289,40 @@ export default function AnalyzeClient() {
     : "";
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-12">
+    <main className="mx-auto max-w-7xl border-x border-[var(--border-subtle)] px-4 py-6 sm:px-6">
       {isBusy && (
         <BusyOverlay label={isAnalyzing ? "Analyzing your sequence" : "Generating AI summary"} />
       )}
 
-      <section className="grid gap-6 rounded-[32px] border border-white/10 bg-white/5 p-8 shadow-[0_18px_60px_rgba(0,0,0,0.12)] backdrop-blur-xl lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="grid gap-6">
-          <div>
-            <p className="text-xs uppercase tracking-[0.35em] text-cyan-300">Analyze</p>
-            <h1 className="mt-3 text-4xl font-semibold leading-tight sm:text-5xl">
-              Focused sequence analysis
-            </h1>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--ink-soft)]">
-              In case you don't have a sequence ready, try the generator to create one with specific features. Paste your sequence using Open in Analyzer option.
-            </p>
-          </div>
+      <header className="mb-6 flex flex-col gap-4 border-b border-[var(--border-subtle)] pb-6 sm:flex-row sm:items-end sm:justify-between">
+        <div><p className="lab-kicker">Module 01 / sequence analyzer</p><h1 className="mt-3 text-3xl font-semibold tracking-[-.04em] sm:text-5xl">Sequence workbench</h1></div>
+        <p className="max-w-md text-sm leading-6 text-[var(--ink-soft)]">Paste a primary sequence. Add a reference only when you need positional mutation comparison.</p>
+      </header>
 
-          <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5">
-            <label className="text-sm font-medium text-slate-300" htmlFor="textarea-analyze-sequence">Primary sequence</label>
+      <section className="grid gap-0 border border-[var(--border-subtle)] lg:grid-cols-[1.35fr_.65fr]">
+        <div className="grid gap-6">
+          <div className="grid gap-3 border-b border-[var(--border-subtle)] bg-[var(--surface)] p-4 sm:p-6">
+            <div className="flex items-center justify-between"><label className="font-mono text-xs font-medium uppercase tracking-wider text-[var(--ink)]" htmlFor="textarea-analyze-sequence">A / Primary sequence</label><span className="font-mono text-[10px] text-[var(--ink-soft)]">{normalizedInput ? detectedType : "UNSET"} · {normalizedInput.length} BP</span></div>
             <textarea
               id="textarea-analyze-sequence"
-              className="min-h-[180px] w-full rounded-2xl border border-white/10 bg-slate-950/60 p-4 font-mono text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-400"
+              className="min-h-[190px] w-full border border-[var(--border-subtle)] bg-[#080a09] p-4 font-mono text-sm leading-7 text-[var(--ink)] outline-none placeholder:text-[#596159] focus:border-[var(--accent)]"
               value={sequence}
               onChange={(event) => setSequence(event.target.value)}
               placeholder="Paste DNA/RNA or load a sequence from the generator"
             />
-            <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-300">
-              <span>Detected: {normalizedInput ? detectedType : "N/A"}</span>
-              <span>Length: {normalizedInput.length} bases</span>
-            </div>
-            <label className="text-sm font-medium text-slate-300" htmlFor="textarea-analyze-compare">Comparison sequence</label>
+            <div className="mt-2 flex items-center justify-between"><label className="font-mono text-xs font-medium uppercase tracking-wider text-[var(--ink)]" htmlFor="textarea-analyze-compare">B / Comparison sequence <span className="text-[var(--ink-soft)]">— optional</span></label><span className="font-mono text-[10px] text-[var(--ink-soft)]">{normalizedCompare.length} BP</span></div>
             <textarea
               id="textarea-analyze-compare"
-              className="min-h-[120px] w-full rounded-2xl border border-white/10 bg-slate-950/60 p-4 font-mono text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-400"
+              className="min-h-[112px] w-full border border-[var(--border-subtle)] bg-[#080a09] p-4 font-mono text-sm leading-7 text-[var(--ink)] outline-none placeholder:text-[#596159] focus:border-[var(--accent)]"
               value={compareSequence}
               onChange={(event) => setCompareSequence(event.target.value)}
               placeholder="Paste a second sequence to detect mutations"
             />
-            <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-300">
-              <span>Comparison length: {normalizedCompare.length} bases</span>
-              <span>Comparison uses T/U normalization</span>
-            </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap items-center gap-3 border-t border-[var(--border-subtle)] pt-4">
               <button
                 type="button"
                 id="btn-analyze-run"
-                className="rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-70"
+                className="bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[#0b0e0d] hover:bg-[var(--accent-strong)] disabled:opacity-70"
                 onClick={handleAnalyze}
                 disabled={isBusy}
               >
@@ -345,7 +332,7 @@ export default function AnalyzeClient() {
                 <button
                   type="button"
                   id="btn-analyze-save"
-                  className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10 disabled:opacity-70"
+                  className="border border-[var(--border-subtle)] px-5 py-3 text-sm font-semibold text-[var(--ink)] hover:bg-[var(--surface-soft)] disabled:opacity-70"
                   onClick={saveAnalysis}
                   disabled={!session || isSaving}
                 >
@@ -355,21 +342,21 @@ export default function AnalyzeClient() {
               <Link
                 href="/generator"
                 id="link-analyze-open-generator"
-                className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10"
+                className="ml-auto border-b border-[var(--ink-soft)] py-2 text-sm text-[var(--ink-soft)] hover:text-[var(--ink)]"
               >
                 Open generator
               </Link>
             </div>
 
             {status && (
-              <div className={`rounded-2xl border px-4 py-3 text-sm ${statusClass}`}>
+              <div className={`border px-4 py-3 text-sm ${statusClass}`}>
                 {status.message}
               </div>
             )}
           </div>
 
-          <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5">
-            <h2 className="text-xl font-semibold">Summary</h2>
+          <div className="grid gap-3 border-b border-[var(--border-subtle)] p-4 sm:p-6">
+            <h2 className="font-mono text-xs uppercase tracking-wider text-[var(--ink-soft)]">Composition summary</h2>
             {analysis ? (
               <div className="grid gap-4">
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -379,7 +366,7 @@ export default function AnalyzeClient() {
                     ["GC%", analysis.gcPercentage.toFixed(2)],
                     ["ORFs", String(analysis.orfs.length)],
                   ].map(([label, value]) => (
-                    <div key={label} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+                    <div key={label} className="border-l border-[var(--border-subtle)] p-3">
                       <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{label}</p>
                       <p className="mt-1 text-lg font-semibold text-slate-100">{value}</p>
                     </div>
@@ -387,7 +374,7 @@ export default function AnalyzeClient() {
                 </div>
                 <div className="flex flex-wrap gap-3">
                   {Object.entries(analysis.counts).map(([key, value]) => (
-                    <span key={key} className="rounded-full bg-white/5 px-3 py-1 text-sm text-slate-200">
+                    <span key={key} className="border border-[var(--border-subtle)] px-3 py-1 font-mono text-sm text-slate-200">
                       {key}: {value}
                     </span>
                   ))}
@@ -398,8 +385,8 @@ export default function AnalyzeClient() {
             )}
           </div>
 
-          <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5">
-            <h2 className="text-xl font-semibold">Mutation details</h2>
+          <div className="grid gap-3 p-4 sm:p-6">
+            <h2 className="font-mono text-xs uppercase tracking-wider text-[var(--ink-soft)]">Mutation register</h2>
             {mutationSummary ? (
               <div className="grid gap-3">
                 <div className="flex flex-wrap gap-3 text-sm">
@@ -430,10 +417,10 @@ export default function AnalyzeClient() {
           </div>
         </div>
 
-        <aside className="grid gap-6 lg:sticky lg:top-6">
-          <div className="grid gap-3 rounded-3xl border border-white/10 bg-white/5 p-5">
-            <h2 className="text-xl font-semibold">AI summary</h2>
-            <div className="min-h-[180px] rounded-2xl border border-white/10 bg-slate-950/50 p-4 text-sm text-slate-200">
+        <aside className="border-t border-[var(--border-subtle)] bg-[var(--surface)] p-4 lg:border-l lg:border-t-0 sm:p-6">
+          <div className="grid gap-3 lg:sticky lg:top-24">
+            <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3"><h2 className="font-mono text-xs uppercase tracking-wider">Interpretation</h2><span className="font-mono text-[9px] text-[var(--accent)]">GEMINI / ASSISTED</span></div>
+            <div className="min-h-[240px] text-sm text-slate-200">
               {aiLoading || isAnalyzing ? (
                 <p className="py-10 text-center text-slate-300">Generating insight...</p>
               ) : aiText ? (
@@ -442,16 +429,7 @@ export default function AnalyzeClient() {
                 <p>Run analysis to generate a plain-language explanation.</p>
               )}
             </div>
-          </div>
-
-          <div className="grid gap-3 rounded-3xl bg-white/5 p-5">
-            <div className="flex items-center justify-center">
-              <img
-                src="/dna-svgrepo-com.svg"
-                alt="DNA icon"
-                className="w-full h-auto max-h-48 object-contain"
-              />
-            </div>
+            <p className="border-t border-[var(--border-subtle)] pt-4 font-mono text-[10px] leading-5 text-[var(--ink-soft)]">Generated interpretation is supplementary. Validate biological conclusions against appropriate reference data.</p>
           </div>
         </aside>
       </section>
