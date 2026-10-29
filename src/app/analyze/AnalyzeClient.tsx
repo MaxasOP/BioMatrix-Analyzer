@@ -41,7 +41,7 @@ function BusyOverlay({ label }: { label: string }) {
           <HamsterLoader />
         </span>
         <div>
-          <p className="text-lg font-semibold text-slate-100">{label}</p>
+          <p className="text-lg font-semibold text-[var(--ink)]">{label}</p>
           <p className="mt-1 text-sm text-slate-300">
             Gemini can take a moment. Hold on dear Researcher...
           </p>
@@ -305,7 +305,7 @@ export default function AnalyzeClient() {
             <div className="flex items-center justify-between"><label className="font-mono text-xs font-medium uppercase tracking-wider text-[var(--ink)]" htmlFor="textarea-analyze-sequence">A / Primary sequence</label><span className="font-mono text-[10px] text-[var(--ink-soft)]">{normalizedInput ? detectedType : "UNSET"} · {normalizedInput.length} BP</span></div>
             <textarea
               id="textarea-analyze-sequence"
-              className="min-h-[190px] w-full border border-[var(--border-subtle)] bg-[#080a09] p-4 font-mono text-sm leading-7 text-[var(--ink)] outline-none placeholder:text-[#596159] focus:border-[var(--accent)]"
+              className="min-h-[190px] w-full border border-[var(--border-subtle)] bg-[var(--surface)] p-4 font-mono text-sm leading-7 text-[var(--ink)] outline-none placeholder:text-[var(--ink-soft)] focus:border-[var(--accent)]"
               value={sequence}
               onChange={(event) => setSequence(event.target.value)}
               placeholder="Paste DNA/RNA or load a sequence from the generator"
@@ -313,7 +313,7 @@ export default function AnalyzeClient() {
             <div className="mt-2 flex items-center justify-between"><label className="font-mono text-xs font-medium uppercase tracking-wider text-[var(--ink)]" htmlFor="textarea-analyze-compare">B / Comparison sequence <span className="text-[var(--ink-soft)]">— optional</span></label><span className="font-mono text-[10px] text-[var(--ink-soft)]">{normalizedCompare.length} BP</span></div>
             <textarea
               id="textarea-analyze-compare"
-              className="min-h-[112px] w-full border border-[var(--border-subtle)] bg-[#080a09] p-4 font-mono text-sm leading-7 text-[var(--ink)] outline-none placeholder:text-[#596159] focus:border-[var(--accent)]"
+              className="min-h-[112px] w-full border border-[var(--border-subtle)] bg-[var(--surface)] p-4 font-mono text-sm leading-7 text-[var(--ink)] outline-none placeholder:text-[var(--ink-soft)] focus:border-[var(--accent)]"
               value={compareSequence}
               onChange={(event) => setCompareSequence(event.target.value)}
               placeholder="Paste a second sequence to detect mutations"
@@ -322,7 +322,7 @@ export default function AnalyzeClient() {
               <button
                 type="button"
                 id="btn-analyze-run"
-                className="bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[#0b0e0d] hover:bg-[var(--accent-strong)] disabled:opacity-70"
+                className="bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--accent-contrast)] hover:bg-[var(--accent-strong)] disabled:opacity-70"
                 onClick={handleAnalyze}
                 disabled={isBusy}
               >
@@ -368,7 +368,7 @@ export default function AnalyzeClient() {
                   ].map(([label, value]) => (
                     <div key={label} className="border-l border-[var(--border-subtle)] p-3">
                       <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{label}</p>
-                      <p className="mt-1 text-lg font-semibold text-slate-100">{value}</p>
+                      <p className="mt-1 text-lg font-semibold text-[var(--ink)]">{value}</p>
                     </div>
                   ))}
                 </div>
@@ -401,7 +401,7 @@ export default function AnalyzeClient() {
                       key={`${mutation.position}-${mutation.type}`}
                       className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border-subtle)] px-3 py-2 text-sm"
                     >
-                      <span className="font-mono text-slate-100">
+                      <span className="font-mono text-[var(--ink)]">
                         {mutation.ref} -&gt; {mutation.sample}
                       </span>
                       <span className="text-xs uppercase tracking-[0.2em] text-slate-400">

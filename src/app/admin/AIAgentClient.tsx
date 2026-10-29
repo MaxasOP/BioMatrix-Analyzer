@@ -82,7 +82,7 @@ if (isAdmin === null) {
         <h2 className="font-mono text-xs uppercase tracking-wider text-[var(--ink-soft)]">Query request</h2>
         <form onSubmit={handleSubmit} className="grid gap-4">
           <textarea
-            className="mt-4 border border-[var(--border-subtle)] bg-[#080a09] p-4 text-slate-100 placeholder:text-slate-500 focus:border-[var(--accent)] outline-none"
+            className="mt-4 border border-[var(--border-subtle)] bg-[var(--surface)] p-4 text-[var(--ink)] placeholder:text-[var(--ink-soft)] focus:border-[var(--accent)] outline-none"
             rows={4}
             placeholder="e.g. Show the last 10 DNA analyses with GC% > 60"
             value={prompt}
@@ -91,7 +91,7 @@ if (isAdmin === null) {
           />
           <button
             type="submit"
-            className="self-start bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-[#0b0e0d] hover:bg-[var(--accent-strong)] disabled:opacity-70"
+            className="self-start bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-[var(--accent-contrast)] hover:bg-[var(--accent-strong)] disabled:opacity-70"
             disabled={loading || !prompt.trim()}
           >
             {loading ? "Generating…" : "Run query"}
@@ -106,13 +106,13 @@ if (isAdmin === null) {
         {sql && (
           <div className="mt-5">
             <h3 className="font-mono text-[10px] uppercase tracking-wider text-[var(--accent)]">Generated SQL</h3>
-            <pre className="mt-2 border border-[var(--border-subtle)] bg-[#080a09] p-4 font-mono text-sm text-slate-100 overflow-x-auto">{sql}</pre>
+            <pre className="mt-2 border border-[var(--border-subtle)] bg-[var(--surface)] p-4 font-mono text-sm text-[var(--ink)] overflow-x-auto">{sql}</pre>
           </div>
         )}
         {result && (
           <div className="mt-6">
             <h3 className="font-mono text-[10px] uppercase tracking-wider text-[var(--accent)]">Result</h3>
-            <pre className="mt-2 border border-[var(--border-subtle)] bg-[#080a09] p-4 font-mono text-sm text-slate-100 overflow-x-auto">{JSON.stringify(result, null, 2)}</pre>
+            <pre className="mt-2 border border-[var(--border-subtle)] bg-[var(--surface)] p-4 font-mono text-sm text-[var(--ink)] overflow-x-auto">{JSON.stringify(result, null, 2)}</pre>
           </div>
         )}
         {!sql && !result && <p className="mt-5 text-sm text-[var(--ink-soft)]">Query output will appear here.</p>}

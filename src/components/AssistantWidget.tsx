@@ -72,7 +72,7 @@ export default function AssistantWidget() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-3 border border-[var(--accent)] bg-[var(--paper)] px-4 py-3 font-mono text-[10px] uppercase tracking-[.14em] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[#0b0e0d]"
+          className="flex items-center gap-3 border border-[var(--accent)] bg-[var(--paper)] px-4 py-3 font-mono text-[10px] uppercase tracking-[.14em] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--accent-contrast)]"
           aria-label="Open AI Assistant"
         >
           <span className="h-2 w-2 bg-[var(--accent)]" aria-hidden="true" /> Query archive
@@ -87,13 +87,13 @@ export default function AssistantWidget() {
             <div className="flex items-center gap-2.5">
               <div className="h-2 w-2 bg-[var(--accent)]" />
               <div>
-                <h3 className="text-sm font-semibold text-slate-100">Rex</h3>
+                <h3 className="text-sm font-semibold text-[var(--ink)]">Rex</h3>
                 <p className="font-mono text-[9px] uppercase tracking-wider text-slate-400">Saved-run query</p>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="border border-transparent p-1 text-slate-400 hover:border-[var(--border-subtle)] hover:text-slate-100"
+              className="border border-transparent p-1 text-[var(--ink-soft)] hover:border-[var(--border-subtle)] hover:text-[var(--ink)]"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -129,7 +129,7 @@ export default function AssistantWidget() {
               >
                 <div
                   className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-6 ${m.role === "user"
-                      ? "bg-[var(--accent)] text-[#0b0e0d] font-medium"
+                      ? "bg-[var(--accent)] text-[var(--accent-contrast)] font-medium"
                       : "bg-[var(--surface)] text-slate-200 border border-[var(--border-subtle)]"
                     }`}
                 >
@@ -160,12 +160,12 @@ export default function AssistantWidget() {
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
               placeholder="Query history or ask biology..."
-              className="flex-1 border border-[var(--border-subtle)] bg-[#080a09] px-3.5 py-2 text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-[var(--accent)]"
+              className="flex-1 border border-[var(--border-subtle)] bg-[var(--surface)] px-3.5 py-2 text-xs text-[var(--ink)] placeholder:text-[var(--ink-soft)] outline-none focus:border-[var(--accent)]"
             />
             <button
               type="submit"
               disabled={isLoading || !chatInput.trim()}
-              className="flex items-center justify-center bg-[var(--accent)] px-3.5 text-[#0b0e0d] hover:bg-[var(--accent-strong)] disabled:opacity-50"
+              className="flex items-center justify-center bg-[var(--accent)] px-3.5 text-[var(--accent-contrast)] hover:bg-[var(--accent-strong)] disabled:opacity-50"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />

@@ -206,7 +206,7 @@ export default function HistoryClient() {
             <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
               <input
                 id="input-history-email"
-                className="border border-[var(--border-subtle)] bg-[#080a09] px-4 py-3 text-slate-100 outline-none placeholder:text-slate-500 focus:border-[var(--accent)]"
+                className="border border-[var(--border-subtle)] bg-[var(--surface)] px-4 py-3 text-[var(--ink)] outline-none placeholder:text-[var(--ink-soft)] focus:border-[var(--accent)]"
                 type="email"
                 placeholder="you@example.com"
                 aria-label="Email address"
@@ -216,7 +216,7 @@ export default function HistoryClient() {
               <button
                 type="button"
                 id="btn-history-send-code"
-                className="bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[#0b0e0d] hover:bg-[var(--accent-strong)] disabled:opacity-70 cursor-pointer"
+                className="bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--accent-contrast)] hover:bg-[var(--accent-strong)] disabled:opacity-70 cursor-pointer"
                 onClick={sendOtp}
                 disabled={busy}
               >
@@ -228,7 +228,7 @@ export default function HistoryClient() {
               <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
                 <input
                   id="input-history-otp"
-                  className="border border-[var(--border-subtle)] bg-[#080a09] px-4 py-3 text-slate-100 outline-none placeholder:text-slate-500 focus:border-[var(--accent)]"
+                  className="border border-[var(--border-subtle)] bg-[var(--surface)] px-4 py-3 text-[var(--ink)] outline-none placeholder:text-[var(--ink-soft)] focus:border-[var(--accent)]"
                   type="text"
                   inputMode="numeric"
                   autoComplete="one-time-code"
@@ -240,7 +240,7 @@ export default function HistoryClient() {
                 <button
                   type="button"
                   id="btn-history-verify-code"
-                  className="bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[#0b0e0d] hover:bg-[var(--accent-strong)] disabled:opacity-70 cursor-pointer"
+                  className="bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--accent-contrast)] hover:bg-[var(--accent-strong)] disabled:opacity-70 cursor-pointer"
                   onClick={verifyOtp}
                   disabled={busy}
                 >
@@ -261,7 +261,7 @@ export default function HistoryClient() {
               <article key={item.id ?? item.sequence_preview} className="p-4 hover:bg-[var(--surface)] sm:p-5">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold text-slate-100">
+                    <p className="text-sm font-semibold text-[var(--ink)]">
                       {item.payload.analysis.sequenceType} · {item.payload.analysis.length} bases · GC {item.payload.analysis.gcPercentage.toFixed(1)}%
                     </p>
                     <p className="text-xs text-slate-400">
@@ -272,7 +272,7 @@ export default function HistoryClient() {
                     <Link
                       href={`/analyze?sequence=${encodeURIComponent(item.payload.analysis.sequence)}${item.payload.compareSequence ? `&compare=${encodeURIComponent(item.payload.compareSequence)}` : ""}`}
                       id={`btn-history-restore-${item.id || index}`}
-                      className="border border-[var(--accent)] px-4 py-2 text-center text-xs font-semibold text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[#0b0e0d]"
+                      className="border border-[var(--accent)] px-4 py-2 text-center text-xs font-semibold text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--accent-contrast)]"
                     >
                       Restore in analyzer
                     </Link>
@@ -360,7 +360,7 @@ export default function HistoryClient() {
           <Link
             href="/profile"
             id="link-history-open-profile"
-            className="border border-[var(--border-subtle)] px-5 py-3 text-center text-sm font-semibold text-slate-100 hover:bg-[var(--surface-soft)]"
+            className="border border-[var(--border-subtle)] px-5 py-3 text-center text-sm font-semibold text-[var(--ink)] hover:bg-[var(--surface-soft)]"
           >
             Open profile
           </Link>
