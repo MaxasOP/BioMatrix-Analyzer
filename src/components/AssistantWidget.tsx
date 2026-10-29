@@ -72,10 +72,10 @@ export default function AssistantWidget() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-3 border border-[var(--accent)] bg-[var(--paper)] px-4 py-3 font-mono text-[10px] uppercase tracking-[.14em] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--accent-contrast)]"
+          className="ai-orb-trigger flex items-center gap-3 px-5 py-4 font-mono text-[11px] font-semibold uppercase tracking-[.14em]"
           aria-label="Open AI Assistant"
         >
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24" aria-hidden="true">
+          <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1" />
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 8.25a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5Z" />
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 10.5v3m-1.5-1.5h3" />

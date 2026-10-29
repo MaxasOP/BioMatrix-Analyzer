@@ -22,4 +22,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .instrument-rule { border-top: 1px solid var(--border-subtle); }
 .base-a { color: #3f8f38; } .base-c { color: #2675b8; } .base-g { color: #b97800; } .base-t { color: #d85a45; }
 .sequence-strip { overflow: hidden; border: 1px solid var(--border-subtle); background: #f7fafb; font-family: var(--font-mono), monospace; font-size: clamp(18px, 2.5vw, 34px); font-weight: 600; letter-spacing: .16em; line-height: 1.8; white-space: nowrap; }
+.ai-orb-trigger { border: 1px solid var(--accent); border-radius: 56% 44% 51% 49% / 47% 54% 46% 53%; background: var(--accent); color: var(--accent-contrast); box-shadow: 5px 5px 0 color-mix(in srgb, var(--accent) 20%, transparent); }
+.ai-orb-trigger:hover { background: var(--accent-strong); border-radius: 47% 53% 44% 56% / 55% 45% 55% 45%; transform: translate(-1px, -1px); }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
