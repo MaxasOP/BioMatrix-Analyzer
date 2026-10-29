@@ -75,7 +75,12 @@ export default function AssistantWidget() {
           className="flex items-center gap-3 border border-[var(--accent)] bg-[var(--paper)] px-4 py-3 font-mono text-[10px] uppercase tracking-[.14em] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--accent-contrast)]"
           aria-label="Open AI Assistant"
         >
-          <span className="h-2 w-2 bg-[var(--accent)]" aria-hidden="true" /> Query archive
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8.25a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5Z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 10.5v3m-1.5-1.5h3" />
+          </svg>
+          Query archive
         </button>
       )}
 
@@ -83,12 +88,12 @@ export default function AssistantWidget() {
       {isOpen && (
         <div className="flex h-[520px] w-[min(360px,calc(100vw-48px))] flex-col border border-[var(--border-subtle)] bg-[var(--paper)]">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-white/5 px-5 py-4">
+          <div className="flex items-center justify-between border-b border-[var(--border-subtle)] px-5 py-4">
             <div className="flex items-center gap-2.5">
               <div className="h-2 w-2 bg-[var(--accent)]" />
               <div>
                 <h3 className="text-sm font-semibold text-[var(--ink)]">Rex</h3>
-                <p className="font-mono text-[9px] uppercase tracking-wider text-slate-400">Saved-run query</p>
+                <p className="font-mono text-[9px] uppercase tracking-wider text-[var(--ink-soft)]">Saved-run query</p>
               </div>
             </div>
             <button
@@ -115,8 +120,8 @@ export default function AssistantWidget() {
                     />
                   </svg>
                 </div>
-                <h4 className="mt-3 text-sm font-medium text-slate-200">Query the archive</h4>
-                <p className="mt-1 text-xs text-slate-400 leading-relaxed">
+                <h4 className="mt-3 text-sm font-medium text-[var(--ink)]">Query the archive</h4>
+                <p className="mt-1 text-xs text-[var(--ink-soft)] leading-relaxed">
                   Query your saved DNA/RNA sequence runs, mutation reports, or general bioinformatics concepts.
                 </p>
               </div>
@@ -130,7 +135,7 @@ export default function AssistantWidget() {
                 <div
                   className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-6 ${m.role === "user"
                       ? "bg-[var(--accent)] text-[var(--accent-contrast)] font-medium"
-                      : "bg-[var(--surface)] text-slate-200 border border-[var(--border-subtle)]"
+                      : "bg-[var(--surface)] text-[var(--ink)] border border-[var(--border-subtle)]"
                     }`}
                 >
                   {m.parts.map((part, idx) => {
@@ -144,7 +149,7 @@ export default function AssistantWidget() {
             ))}
 
             {isLoading && (
-              <div className="flex items-center gap-2 text-xs text-slate-400">
+              <div className="flex items-center gap-2 text-xs text-[var(--ink-soft)]">
                 <span className="flex h-2 w-2 relative">
                   <span className="relative inline-flex h-2 w-2 bg-[var(--accent)]"></span>
                 </span>
@@ -155,7 +160,7 @@ export default function AssistantWidget() {
           </div>
 
           {/* Input Form */}
-          <form onSubmit={handleFormSubmit} className="border-t border-white/5 p-4 flex gap-2">
+          <form onSubmit={handleFormSubmit} className="border-t border-[var(--border-subtle)] p-4 flex gap-2">
             <input
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}

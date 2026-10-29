@@ -198,7 +198,7 @@ export default function HistoryClient() {
       <section className="grid gap-0 border border-[var(--border-subtle)]">
 
         {session ? (
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border-subtle)] bg-[var(--surface)] p-4 text-sm text-slate-200">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border-subtle)] bg-[var(--surface)] p-4 text-sm text-[var(--ink)]">
             <span>Signed in as {session.user.email ?? "user"}</span><span className="font-mono text-[9px] uppercase text-[var(--accent)]">Archive connected</span>
           </div>
         ) : (
@@ -264,7 +264,7 @@ export default function HistoryClient() {
                     <p className="text-sm font-semibold text-[var(--ink)]">
                       {item.payload.analysis.sequenceType} · {item.payload.analysis.length} bases · GC {item.payload.analysis.gcPercentage.toFixed(1)}%
                     </p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-[var(--ink-soft)]">
                       {item.created_at ? new Date(item.created_at).toLocaleString() : "Local"}
                     </p>
                   </div>
@@ -279,7 +279,7 @@ export default function HistoryClient() {
                     <button
                       type="button"
                       id={`btn-history-copy-${item.id || index}`}
-                      className="border border-[var(--border-subtle)] px-4 py-2 text-xs font-semibold text-slate-200 hover:bg-[var(--surface-soft)] cursor-pointer"
+                      className="border border-[var(--border-subtle)] px-4 py-2 text-xs font-semibold text-[var(--ink)] hover:bg-[var(--surface-soft)] cursor-pointer"
                       onClick={async () => {
                         await navigator.clipboard.writeText(item.payload.analysis.sequence);
                         setNotice("Sequence copied to clipboard.");
@@ -299,7 +299,7 @@ export default function HistoryClient() {
                     ) : null}
                   </div>
                 </div>
-                <p className="mt-3 break-all font-mono text-[11px] leading-5 text-slate-300 sm:text-xs">
+                <p className="mt-3 break-all font-mono text-[11px] leading-5 text-[var(--ink-soft)] sm:text-xs">
                   {item.sequence_preview}
                 </p>
               </article>

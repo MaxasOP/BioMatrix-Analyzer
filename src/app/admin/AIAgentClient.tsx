@@ -64,8 +64,8 @@ if (isAdmin === null) {
       <main className="mx-auto max-w-7xl border-x border-[var(--border-subtle)] px-6 py-12">
         <section className="border border-[var(--border-subtle)] bg-[var(--surface)] p-8">
           <p className="font-mono text-xs uppercase tracking-wider text-red-300">Access denied</p>
-          <h2 className="mt-3 text-2xl font-semibold text-slate-200">Administrative query console</h2>
-          <p className="mt-4 text-slate-300">This account is not included in the administrative access list.</p>
+          <h2 className="mt-3 text-2xl font-semibold text-[var(--ink)]">Administrative query console</h2>
+          <p className="mt-4 text-[var(--ink-soft)]">This account is not included in the administrative access list.</p>
         </section>
       </main>
     );

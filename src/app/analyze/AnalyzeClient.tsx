@@ -42,7 +42,7 @@ function BusyOverlay({ label }: { label: string }) {
         </span>
         <div>
           <p className="text-lg font-semibold text-[var(--ink)]">{label}</p>
-          <p className="mt-1 text-sm text-slate-300">
+          <p className="mt-1 text-sm text-[var(--ink-soft)]">
             Gemini can take a moment. Hold on dear Researcher...
           </p>
         </div>
@@ -285,7 +285,7 @@ export default function AnalyzeClient() {
       ? "border-red-400/40 bg-red-500/10 text-red-200"
       : status.type === "success"
         ? "border-emerald-400/40 bg-emerald-500/10 text-emerald-200"
-        : "border-[var(--border-subtle)] bg-[var(--surface)] text-slate-200"
+        : "border-[var(--border-subtle)] bg-[var(--surface)] text-[var(--ink)]"
     : "";
 
   return (
@@ -367,14 +367,14 @@ export default function AnalyzeClient() {
                     ["ORFs", String(analysis.orfs.length)],
                   ].map(([label, value]) => (
                     <div key={label} className="border-l border-[var(--border-subtle)] p-3">
-                      <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{label}</p>
+                      <p className="text-xs uppercase tracking-[0.2em] text-[var(--ink-soft)]">{label}</p>
                       <p className="mt-1 text-lg font-semibold text-[var(--ink)]">{value}</p>
                     </div>
                   ))}
                 </div>
                 <div className="flex flex-wrap gap-3">
                   {Object.entries(analysis.counts).map(([key, value]) => (
-                    <span key={key} className="border border-[var(--border-subtle)] px-3 py-1 font-mono text-sm text-slate-200">
+                    <span key={key} className="border border-[var(--border-subtle)] px-3 py-1 font-mono text-sm text-[var(--ink)]">
                       {key}: {value}
                     </span>
                   ))}
@@ -390,10 +390,10 @@ export default function AnalyzeClient() {
             {mutationSummary ? (
               <div className="grid gap-3">
                 <div className="flex flex-wrap gap-3 text-sm">
-                  <span className="border border-[var(--border-subtle)] px-3 py-1 font-mono text-slate-200">Total: {mutationSummary.total}</span>
-                  <span className="border border-[var(--border-subtle)] px-3 py-1 font-mono text-slate-200">Subs: {mutationSummary.substitutions}</span>
-                  <span className="border border-[var(--border-subtle)] px-3 py-1 font-mono text-slate-200">Insertions: {mutationSummary.insertions}</span>
-                  <span className="border border-[var(--border-subtle)] px-3 py-1 font-mono text-slate-200">Deletions: {mutationSummary.deletions}</span>
+                  <span className="border border-[var(--border-subtle)] px-3 py-1 font-mono text-[var(--ink)]">Total: {mutationSummary.total}</span>
+                  <span className="border border-[var(--border-subtle)] px-3 py-1 font-mono text-[var(--ink)]">Subs: {mutationSummary.substitutions}</span>
+                  <span className="border border-[var(--border-subtle)] px-3 py-1 font-mono text-[var(--ink)]">Insertions: {mutationSummary.insertions}</span>
+                  <span className="border border-[var(--border-subtle)] px-3 py-1 font-mono text-[var(--ink)]">Deletions: {mutationSummary.deletions}</span>
                 </div>
                 <div className="space-y-2">
                   {mutations.slice(0, 8).map((mutation) => (
@@ -404,7 +404,7 @@ export default function AnalyzeClient() {
                       <span className="font-mono text-[var(--ink)]">
                         {mutation.ref} -&gt; {mutation.sample}
                       </span>
-                      <span className="text-xs uppercase tracking-[0.2em] text-slate-400">
+                      <span className="text-xs uppercase tracking-[0.2em] text-[var(--ink-soft)]">
                         {mutation.type} @ {mutation.position}
                       </span>
                     </div>
@@ -420,11 +420,11 @@ export default function AnalyzeClient() {
         <aside className="border-t border-[var(--border-subtle)] bg-[var(--surface)] p-4 lg:border-l lg:border-t-0 sm:p-6">
           <div className="grid gap-3 lg:sticky lg:top-24">
             <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3"><h2 className="font-mono text-xs uppercase tracking-wider">Interpretation</h2><span className="font-mono text-[9px] text-[var(--accent)]">GEMINI / ASSISTED</span></div>
-            <div className="min-h-[240px] text-sm text-slate-200">
+            <div className="min-h-[240px] text-sm text-[var(--ink)]">
               {aiLoading || isAnalyzing ? (
-                <p className="py-10 text-center text-slate-300">Generating insight...</p>
+                <p className="py-10 text-center text-[var(--ink-soft)]">Generating insight...</p>
               ) : aiText ? (
-                <pre className="whitespace-pre-wrap font-sans leading-7 text-slate-200">{aiText}</pre>
+                <pre className="whitespace-pre-wrap font-sans leading-7 text-[var(--ink)]">{aiText}</pre>
               ) : (
                 <p>Run analysis to generate a plain-language explanation.</p>
               )}

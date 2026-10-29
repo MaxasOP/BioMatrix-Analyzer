@@ -27,7 +27,7 @@ export default function AnalyzePage() {
   return (
     <Suspense
       fallback={
-        <main className="mx-auto max-w-6xl px-6 py-12 text-slate-200">
+        <main className="mx-auto max-w-6xl px-6 py-12 text-[var(--ink)]">
           Loading analysis tools...
         </main>
       }
