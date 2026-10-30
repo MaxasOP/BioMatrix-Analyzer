@@ -11,13 +11,13 @@ export const metadata: Metadata = {
     canonical: "/analyze",
   },
   openGraph: {
-    title: "Sequence Analyzer | BioMatrix Sequence Lab",
+    title: "Sequence Analyzer | Rezerch Sequence Lab",
     description:
       "Paste DNA/RNA sequences to calculate GC content, analyze transcription/translation, map restriction sites, detect mutations, and get professional AI explanations.",
     url: "/analyze",
   },
   twitter: {
-    title: "Sequence Analyzer | BioMatrix Sequence Lab",
+    title: "Sequence Analyzer | Rezerch Sequence Lab",
     description:
       "Paste DNA/RNA sequences to calculate GC content, analyze transcription/translation, map restriction sites, detect mutations, and get professional AI explanations.",
   },

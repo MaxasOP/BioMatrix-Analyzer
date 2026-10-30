@@ -9,13 +9,13 @@ export const metadata: Metadata = {
     canonical: "/generator",
   },
   openGraph: {
-    title: "DNA/RNA Sequence Generator | BioMatrix Sequence Lab",
+    title: "DNA/RNA Sequence Generator | Rezerch Sequence Lab",
     description:
       "Generate random DNA or RNA test sequences of customizable lengths. Easily copy or export generated sequences directly into the analyzer for mock testing.",
     url: "/generator",
   },
   twitter: {
-    title: "DNA/RNA Sequence Generator | BioMatrix Sequence Lab",
+    title: "DNA/RNA Sequence Generator | Rezerch Sequence Lab",
     description:
       "Generate random DNA or RNA test sequences of customizable lengths. Easily copy or export generated sequences directly into the analyzer for mock testing.",
   },

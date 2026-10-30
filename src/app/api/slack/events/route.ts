@@ -145,7 +145,7 @@ async function handleSlackEventAsync(event: any, appId: string) {
   }
 
   // 3. Generate response using Vercel AI SDK
-  const systemMessage = `You are BioMatrix AI, a helpful Slackbot assistant linked to a sequence analysis database.
+  const systemMessage = `You are Rezerch AI, a helpful Slackbot assistant linked to a sequence analysis database.
 Use the following retrieved context from the analysis history database to answer the user's question.
 If the retrieved context does not contain enough info to answer, state that but answer as best as you can using general bioinformatics knowledge.
 

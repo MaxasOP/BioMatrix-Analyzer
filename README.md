@@ -1,14 +1,14 @@
-# BioMatrix.AI – Premium Bioinformatics Platform
+# Rezerch – Premium Bioinformatics Platform
 
 **Overview**
 
-BioMatrix.AI is a cutting‑edge, agency‑grade bioinformatics suite built on **Next.js 16 (App Router)**, **Supabase** (with pgvector storage), and **Google Gemini** for AI‑driven insights. The platform delivers real‑time, AI‑enhanced genomic analysis via a premium, dark-mode-first user interface featuring custom-engineered cognitive AI agents.
+Rezerch is a cutting‑edge, agency‑grade bioinformatics suite built on **Next.js 16 (App Router)**, **Supabase** (with pgvector storage), and **Google Gemini** for AI‑driven insights. The platform delivers real‑time, AI‑enhanced genomic analysis via a premium, dark-mode-first user interface featuring custom-engineered cognitive AI agents.
 
 ---
 
 ## Advanced AI Agent Architecture
 
-BioMatrix.AI integrates two key AI agents to assist researchers in interpreting genomic datasets and database history:
+Rezerch integrates two key AI agents to assist researchers in interpreting genomic datasets and database history:
 
 ### 1. The RAG Agent (Rex)
 Accessible via the user assistant chat widget, **Rex** is a retrieval-augmented generation agent that makes database history fully conversational:

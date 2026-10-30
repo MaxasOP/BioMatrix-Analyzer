@@ -16,7 +16,7 @@ export default function Navbar() {
     <div className="mx-auto flex h-16 max-w-7xl items-stretch justify-between px-4 sm:px-6">
       <Link href="/" id="nav-logo-link" className="flex items-center gap-3 border-x border-[var(--border-subtle)] px-4">
         <BioMatrixMark className="h-9 w-9 text-[var(--accent)]" />
-        <span><strong className="block text-sm tracking-[-0.02em]">BIOMATRIX</strong><small className="block font-mono text-[9px] tracking-[.18em] text-[var(--ink-soft)]">SEQUENCE LAB</small></span>
+        <span><strong className="block text-sm tracking-[-0.02em]">REZERCH</strong><small className="block font-mono text-[9px] tracking-[.18em] text-[var(--ink-soft)]">SEQUENCE LAB</small></span>
       </Link>
       <nav className="hidden items-stretch md:flex" aria-label="Primary navigation">{links.map(link => { const active = pathname === link.href; return <Link key={link.href} href={link.href} id={`nav-link-${link.label.toLowerCase()}`} className={`flex min-w-24 flex-col justify-center border-r border-[var(--border-subtle)] px-4 text-xs ${active ? "bg-[var(--accent)] text-[var(--accent-contrast)]" : "text-[var(--ink-soft)] hover:bg-[var(--surface-soft)] hover:text-[var(--ink)]"}`}><span className="font-mono text-[9px] opacity-60">{link.code}</span><span>{link.label}</span></Link>})}</nav>
       <button type="button" id="nav-mobile-toggle" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(v => !v)} className="my-3 border border-[var(--border-subtle)] px-3 font-mono text-xs md:hidden">{menuOpen ? "CLOSE" : "MENU"}</button>

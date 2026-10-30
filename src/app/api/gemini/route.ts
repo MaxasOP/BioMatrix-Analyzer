@@ -28,7 +28,7 @@ export async function POST(request: Request) {
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({ model: modelName });
 
-  const prompt = `You are BioMatrix AI, a clear and concise bioinformatics tutor.\n\nSequence (truncated if needed):\n${body.sequence}\n\nStructured summary (JSON):\n${JSON.stringify(body.summary, null, 2)}\n\nReturn:\n1) Plain-language interpretation for a student.\n2) Key stats and biological implications.\n3) Any caution about low complexity or short sequences.\nKeep it under 180 words.`;
+  const prompt = `You are Rezerch AI, a clear and concise bioinformatics tutor.\n\nSequence (truncated if needed):\n${body.sequence}\n\nStructured summary (JSON):\n${JSON.stringify(body.summary, null, 2)}\n\nReturn:\n1) Plain-language interpretation for a student.\n2) Key stats and biological implications.\n3) Any caution about low complexity or short sequences.\nKeep it under 180 words.`;
 
   try {
     const result = await model.generateContent(prompt);

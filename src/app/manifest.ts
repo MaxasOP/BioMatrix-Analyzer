@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "BioMatrix Sequence Lab",
-    short_name: "BioMatrix",
+    name: "Rezerch Sequence Lab",
+    short_name: "Rezerch",
     description:
       "DNA and RNA sequence analysis workbench for composition, translation, mutation detection, and interpretation.",
     start_url: "/",

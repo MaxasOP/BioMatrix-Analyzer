@@ -161,7 +161,7 @@ export async function POST(request: Request) {
   }
 
   // 3. Setup Vercel AI SDK streaming response
-  const systemPrompt = `You are the BioMatrix Assistant (named Rex).
+  const systemPrompt = `You are the Rezerch Assistant (named Rex).
 Help the researcher analyze and understand their saved sequence history.
 
 Here is a summary of all recent analysis runs in the user's history (most recent first):

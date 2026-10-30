@@ -22,8 +22,8 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://biomatrix-analyzer.vercel.app"),
   title: {
-    default: "BioMatrix Sequence Lab",
-    template: "%s | BioMatrix Sequence Lab",
+    default: "Rezerch Sequence Lab",
+    template: "%s | Rezerch Sequence Lab",
   },
   description:
     "DNA and RNA sequence analysis workbench for composition, translation, mutation detection, and interpretation.",
